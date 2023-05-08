@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "屏科租屋網"
+version = "0.0.1"
+description = "提供屏科大的學生租屋或讓房東刊登房屋的平台"
+authors = ["Lin-Rexter <aaaa35963596@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+flask = "^2.3.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
