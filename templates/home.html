@@ -43,6 +43,7 @@
     <!-- Custom Style (自訂的CSS，只需更改filename)-->
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='rwd.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -58,13 +59,14 @@
 
 <body>
     <h2>屏科租屋網 - {% if name %}{{name}}{% else %}{{"首頁"}}{% endif %}</h2>
+
     {% if msg %}
         <h3> 這是變數: {{msg}} </h3>
 
         <ul>
-        {% for message in msg %}
+            {% for message in msg %}
             <li>{{ message }}</li>
-        {% endfor %}
+            {% endfor %}
         </ul>
     {% endif %}
 
