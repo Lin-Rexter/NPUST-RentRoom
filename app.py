@@ -32,7 +32,6 @@ app = Flask(__name__)
 app.secret_key = os.urandom(16)
 
 
-@app.route("/")
 @app.route("/home", methods=["GET", "POST"])
 def home():
     # http://127.0.0.1:5000/home?title=567
@@ -45,6 +44,11 @@ def house(name: int, msg: str):
     # http://127.0.0.1:5000/house/123/456
     args = {"name": name, "msg": msg}
     return render_template("home.html", **args)
+
+
+@app.route("/block", methods=["GET", "POST"])
+def block():
+    return render_template("block_list.html")
 
 
 # 當發生404錯誤時所顯示的頁面
