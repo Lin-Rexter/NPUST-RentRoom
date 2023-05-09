@@ -20,7 +20,7 @@ from flask import (
     url_for,
     flash,
     jsonify,
-    session
+    session,
 )
 
 # 異常處理
@@ -32,9 +32,23 @@ app = Flask(__name__)
 app.secret_key = os.urandom(16)
 
 
-@app.route("/")
+@app.route("/home", methods=["GET", "POST"])
 def home():
-    return render_template("home.html")
+    # http://127.0.0.1:5000/home?title=567
+    title = request.values.get("title", None)
+    return render_template("home.html", msg=title)
+
+
+@app.route("/house/<name>/<msg>", methods=["GET", "POST"])
+def house(name: int, msg: str):
+    # http://127.0.0.1:5000/house/123/456
+    args = {"name": name, "msg": msg}
+    return render_template("home.html", **args)
+
+
+@app.route("/block", methods=["GET", "POST"])
+def block():
+    return render_template("block_list.html")
 
 
 # 當發生404錯誤時所顯示的頁面
