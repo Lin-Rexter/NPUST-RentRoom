@@ -51,6 +51,11 @@ def block():
     return render_template("block_list.html")
 
 
+@app.route("/tenant_managed", methods=["GET", "POST"])
+def tenant():
+    return render_template("tenant_managed.html")  # 房東管理頁面模板
+
+
 # 當發生404錯誤時所顯示的頁面
 @app.errorhandler(404)
 def page_not_found(e):
