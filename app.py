@@ -32,7 +32,7 @@ app = Flask(__name__)
 app.secret_key = os.urandom(16)
 
 
-@app.route("/home", methods=["GET", "POST"])
+@app.route("/", methods=["GET", "POST"])
 def home():
     # http://127.0.0.1:5000/home?title=567
     title = request.values.get("title", None)

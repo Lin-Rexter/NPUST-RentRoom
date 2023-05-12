@@ -2,12 +2,12 @@
 
 ::selection {
     background-color: #ffe9ad;
-    color: rgb(50, 50, 50);
+    color: rgb(30, 30, 30);
 }
 
 ::-moz-selection {
     background-color: #ffe9ad;
-    color: rgb(50, 50, 50);
+    color: rgb(30, 30, 30);
 }
 
 body * {

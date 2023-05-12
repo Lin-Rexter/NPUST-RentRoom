@@ -46,7 +46,7 @@ function add_ip(id, ip, name, date, status) {
         <tr class="ip">
           <td data-th="ID">${id}</td>
           <td data-th="IP位置">${ip}</td>
-          <td data-th="使用者名稱">${name}</td>
+          <td data-th="使用者ID">@${name}</td>
           <td data-th="新增日期">${date}</td>
           <td data-th="狀態">${status}</td>
           <td data-th="功能">
@@ -62,6 +62,7 @@ function add_ip(id, ip, name, date, status) {
         </tr>`;
 }
 
+var Status = ["停權中", "二次停權中", "永久停權中"]
 function add_many_ip(total) {
     for (var i = 0; i < total; i++) {
         add_ip(
@@ -70,12 +71,12 @@ function add_many_ip(total) {
                 0,
                 255
             )}.${getRandomInt(0, 255)}`,
-            `${getRandomName(getRandomInt(3, 8))}`,
+            `${getRandomName(getRandomInt(10, 10))}`,
             getRandomDate(new Date(2022, 0, 1), new Date()).toLocaleDateString(
                 "zh-TW",
                 options
             ),
-            "停權中"
+            Status[getRandomInt(0, Status.length-1)]
         );
     }
 }
