@@ -74,9 +74,8 @@ socketio = SocketIO(app)
 env_path = find_dotenv(raise_error_if_not_found=True)
 load_dotenv(env_path)
 
-# 密碼
-Developer_Pwd = os.getenv("PASSWORD") or None
-Admin_Pwd = os.getenv("Admin_Pwd") or None
+# 開發者登入密碼
+Developer_Pwd = os.getenv("DEV_PASSWORD") or None
 
 if Developer_Pwd is None:
     raise ValueError(".env檔尚未設置密碼!")
@@ -84,6 +83,7 @@ if Developer_Pwd is None:
 # 開發模式
 is_dev = True
 
+# 當開發模式啟用時，啟用開發者登入授權
 if is_dev:
     # 檢查登入狀態
     @app.before_request
@@ -122,8 +122,6 @@ async def login_signup():
 
 
 # = = = 聊天 = = =
-
-
 @socketio.on("join", namespace="/chat")
 def join(message):
     room = session.get("chatroom")
@@ -134,9 +132,6 @@ def join(message):
 @socketio.on("send")
 def chat(data):
     emit("get", data)
-
-
-# 🔥🔥🔥 共享網頁網址: https://d2ac-2a09-bac1-7420-18-00-50-129.ngrok-free.app  🔥🔥🔥
 
 
 # 🌟🌟🌟首頁🌟🌟🌟
@@ -221,7 +216,7 @@ async def house_search():
     )
 
 
-# 個人檔案(房東/房客)
+# 個人檔案(房東/房客)(建置中)
 @app.route("/profile", methods=["GET", "POST"])
 async def profile():
     """
