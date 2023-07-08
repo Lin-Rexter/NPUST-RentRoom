@@ -15,6 +15,9 @@
   <summary>
 
 ## 運行 🚀
+
+  </summary>
+  
 - ### [使用Poetry運行](https://python-poetry.org/docs/#installation)
 	> **1. 編輯 [poetry 設定檔](https://python-poetry.org/docs/cli/#config)**
 	>> 如果偏好將虛擬空間配置在專案目錄底下
@@ -49,7 +52,6 @@
 	> poetry run python ./app.py
 	> ```
 
-  </summary>
 </details>
 
 ## License
