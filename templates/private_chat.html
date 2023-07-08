@@ -1,0 +1,358 @@
+{# 要繼承的模板 #}
+{% extends "./layouts/base.html" %}
+
+{# 設置網頁的logo #}
+{% block Web_Icon %} https:// {% endblock Web_Icon %}
+
+{# 設置網頁標題 #}
+{% block Title %}房屋資料{% endblock Title%}
+
+{# 設置網頁CSS #}
+{% block CSS %}
+{# super(): 繼承原本模板設定的 #}
+{{ super() }}
+
+<!-- Custom Style (自訂的CSS，只需更改filename)-->
+<link rel="stylesheet" href="{{ url_for('static', filename='./css/private_chat.css') }}" defer>
+<style>
+    .write_container {
+        background-color: #e6e7ee;
+        border-radius: 8px;
+        box-shadow: 0px 0px 8px 4px #ccc;
+    }
+</style>
+{% endblock CSS %}
+
+
+{# 網頁主區塊 #}
+{% block Outer_Main %}
+<main id="Main" class="row d-flex justify-content-center X_glass_morphism rounded rounded-5 p-5">
+    {% block Main %}
+    <article class="col-12 p-0">
+        <div class="row justify-content-center gy-5">
+            <!-- 標題 -->
+            <div class="col-12 col-sm-9 col-md-5 d-flex justify-content-center align-content-center soft_title_white">
+                <p class="display-4 my-2">私訊</p>
+            </div>
+
+            <!-- 撰寫區塊 -->
+            <div class="col-12 col-md-11 justify-content-center write_container py-1 px-4 p-sm-4 p-md-5">
+                <div class="row d-flex justify-content-center align-content-center">
+                    <!-- 上線狀態顯示 -->
+                    <!--div class="col-12">
+                        <div class="msg-header">
+                            <div class="msg-header-img">
+                                <img src=" ">
+                            </div>
+
+                            <div class="">
+                                <h4>John Lewis</h4>
+                                <h6>3 hours ago...</h6>
+                            </div>
+                        </div>
+                    </div-->
+                    <!-- 通訊錄(左) -->
+                    <div id="people_list"
+                        class="people_list people-inbox col-12 col-sm-10 col-md-4 m-3 mb-0 p-3 border border-3 border-success rounded rounded-4 justify-content-center align-items-center">
+                        <!-- 搜尋房東 -->
+                        <div class="row d-flex justify-content-center align-content-center search_people">
+                            <p class="col-12 fs-2 fw-bold text-primary justify-content-center d-flex">搜尋房東</p>
+                            <form class="col-12 d-flex align-items-center floating-content position-relative">
+                                <input class="form-control me-2 fs-2 mb-2 mb-xl-auto floating-input" type="search"
+                                    placeholder="Search" aria-label="Search">
+                                <i class="fa-solid fa-magnifying-glass fs-2 fa-search"></i>
+                            </form>
+                        </div>
+
+                        <!-- 分隔線 -->
+                        <div>
+                            <hr class="hr">
+                        </div>
+
+                        <!-- 房東列表 -->
+                        <div class="list-group border border-2 border-secondary rounded rounded-4" id="list-tab"
+                            role="tablist">
+                            <a class="list-group-item list-group-item-action active btn btn-outline-secondary"
+                                id="list-home-list" data-bs-toggle="list" href="#list-home" role="tab"
+                                aria-controls="list-home">
+                                <div class="row d-flex">
+                                    <div class="send-chats-img col-8 col-md-3 justify-content-center align-content-center align-self-center">
+                                        <img src="https://assets.clibo.tw/images/commissions/LzMZg8-TFIR.jpeg" alt="">
+                                    </div>
+                                    <div class="col-6">
+                                        <p class="fs-2">林文進</p>
+                                        <small>我跟你說...</small>
+                                    </div>
+                                    <div class="col-4">
+                                        <span id="last_time">06/20/2023 PM 08:05</span>
+                                    </div>
+                                </div>
+                            </a>
+                            <a class="list-group-item list-group-item-action btn btn-outline-secondary fs-2 fw-bold"
+                                id="list-profile-list" data-bs-toggle="list" href="#list-profile" role="tab"
+                                aria-controls="list-profile">
+                                房東2
+                            </a>
+                            <a class="list-group-item list-group-item-action btn btn-outline-secondary fs-2 fw-bold"
+                                id="list-messages-list" data-bs-toggle="list" href="#list-messages" role="tab"
+                                aria-controls="list-messages">
+                                房東3
+                            </a>
+                            <a class="list-group-item list-group-item-action btn btn-outline-secondary fs-2 fw-bold"
+                                id="list-settings-list" data-bs-toggle="list" href="#list-settings" role="tab"
+                                aria-controls="list-settings">
+                                房東4
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- 聊天區塊(右) -->
+                    <div class="chat-page p-3 col-12 col-sm-10 col-md-7">
+                        <!-- 訊息顯示區塊 -->
+                        <div class="msg-inbox p-0 row" id="message-body">
+                            <div class="tab-content col-12 p-0" id="nav-tabContent">
+                                <div class="tab-pane fade show active msg-page row-12 w-100 m-0" id="list-home"
+                                    role="tabpanel" aria-labelledby="list-home-list">
+                                    <!-- 訊息插入區塊 -->
+                                    <div id="msg_page" class="col-12"></div>
+                                </div>
+                                <div class="tab-pane fade msg-page row w-100" id="list-profile" role="tabpanel"
+                                    aria-labelledby="list-profile-list">
+                                    <!-- 訊息插入區塊 -->
+                                    <div id="msg_page" class="col-12"></div>
+                                </div>
+                                <div class="tab-pane fade msg-page row w-100" id="list-messages" role="tabpanel"
+                                    aria-labelledby="list-messages-list">
+                                    <!-- 訊息插入區塊 -->
+                                    <div id="msg_page" class="col-12"></div>
+                                </div>
+                                <div class="tab-pane fade msg-page row w-100" id="list-settings" role="tabpanel"
+                                    aria-labelledby="list-settings-list">
+                                    <!-- 訊息插入區塊 -->
+                                    <div id="msg_page" class="col-12"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 輸入訊息區塊 -->
+                        <div class="msg-block row d-flex">
+                            <!-- 功能區塊 -->
+                            <div
+                                class="col-4 bottom-icons d-flex align-content-center align-items-center border border-3 border-success rounded rounded-4">
+                                <input id="file-input" type="file">
+                            </div>
+
+                            <!-- 輸入區塊 -->
+                            <div class="col-8 input-block align-items-center align-self-center ">
+                                <div
+                                    class="row d-flex justify-content-end align-content-center align-items-center align-self-center">
+                                    <!-- 輸入框 -->
+                                    <div class="col-9">
+                                        <input type="text" title="輸入使用者名稱" class="form-control" id="user-input"
+                                            name='username' placeholder="寫些訊息..." required>
+                                    </div>
+
+                                    <!-- 發送按鈕區塊 -->
+                                    <div class="col-3 input-button">
+                                        <button type="submit" title="發送按鈕" onclick="sendMessage()"
+                                            class='soft_btn_blue btn btn-primary fw-bold fs-3 un border border-3 border-primary rounded-4'>
+                                            <i class="fa fa-paper-plane"></i>
+                                            發送
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </article>
+    {% endblock Main %}
+</main>
+{% endblock Outer_Main %}
+
+
+{# 網頁腳尾 #}
+{% block Footer %}
+{% endblock Footer %}
+
+{# 網頁JS #}
+{% block JS %}
+{{ super() }}
+
+<script>
+    let form_content = document.getElementById('content'); // 撰寫區塊
+    let count = document.getElementById('count'); // 計數字數
+
+    // 紀錄撰寫區塊字數
+    var len = form_content.value.length;
+
+    // 改變計數字數
+    form_content.addEventListener('input', function () {
+        // 更新字數
+        len = this.value.length;
+
+        // 顯示計數字數
+        count.innerHTML = len;
+    });
+</script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.2/socket.io.js"
+    integrity="sha512-jMNwWSmjje4fjYut9MBGKXw5FZA6D67NHAuC9szpjbbjg51KefquNfvn4DalCbGfkcv/jHsHnPo1o47+8u4biA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+    var Msg_Block = document.getElementById("msg_page"); // 聊天區塊
+    var userInput = document.getElementById("user-input"); // 訊息輸入框
+
+    // Socket.IO 聊天
+    var socket = io.connect();
+
+    // 發送訊息函式
+    function sendMessage() {
+        if (userInput.value !== "") {
+            // 將訊息發送至後端
+            socket.emit('send', userInput.value);
+
+            // 清空輸入
+            userInput.value = ""
+
+            socket.on('connect', function () {
+                socket.emit('join', {});
+            })
+
+            socket.on('status', function (data) {
+                //
+            })
+
+            // 接收由後端傳回來的訊息
+            socket.on('get', function (data) {
+                Insert_received_Message(
+                    img = "https://assets.clibo.tw/images/commissions/LzMZg8-TFIR.jpeg",
+                    user = "林文進",
+                    message = data,
+                    time = new Date().toLocaleString()
+                )
+
+                Insert_Send_Message(
+                    img = "https://assets.clibo.tw/images/commissions/LzMZg8-TFIR.jpeg",
+                    user = "林文進_2",
+                    message = data,
+                    time = new Date().toLocaleString()
+                )
+            });
+        }
+
+    }
+
+    // 插入訊息函式(發送方)
+    function Insert_Send_Message(img, user, message, time) {
+        // 發送方 - 整體發送區塊
+        let sendBlock = document.createElement("div");
+        sendBlock.classList.add("row", "ms-1", "d-flex", "d-sm-block-flex", "justify-content-start", "p-1")
+
+        // 發送方 - 大頭貼區塊
+        let sendImgBlock = document.createElement("div");
+        sendImgBlock.classList.add("send-chats-img", "col-8", "col-md-4", "justify-content-center", "align-content-center", "align-self-center", "mb-0", "mb-md-4", "p-2", "pb-0")
+
+        // 發送方 - 大頭貼
+        let sendImg = document.createElement("img");
+        sendImg.src = img
+
+        // 發送方 - 訊息的外區塊(包含訊息、時間)
+        let sendMsgBlock = document.createElement("div");
+        sendMsgBlock.classList.add("msg_block", "col-11", "col-md-8", "d-flex", "justify-content-start", "align-self-center", "p-1", "mt-0", "mt-md-4")
+
+        // 發送方 - 訊息的內區塊
+        let sendMsgInbox = document.createElement("div");
+        sendMsgInbox.classList.add("send-msg-inbox", "p-1", "ps-0")
+
+        // 發送方 - 訊息發送者名稱
+        let sendUser = document.createElement("p")
+        sendUser.classList.add("m-0", "d-flex", "justify-content-start", "fs-4")
+        sendUser.innerHTML = user
+
+        // 發送方 - 訊息區塊
+        let sendMsg = document.createElement("p");
+        sendMsg.classList.add("send_msg_content", "fs-3", "px-3", "py-2", "m-0", "mb-2", "d-block-flex")
+        sendMsg.innerHTML = message
+
+        // 發送方 - 時間區塊
+        let sendTime = document.createElement("span")
+        sendTime.classList.add("time", "fs-4", "m-0", "d-flex", "justify-content-start")
+        sendTime.innerHTML = time
+
+        // 訊息區塊整合
+        sendMsgInbox.appendChild(sendUser)
+        sendMsgInbox.appendChild(sendMsg)
+        sendMsgInbox.appendChild(sendTime)
+        sendMsgBlock.appendChild(sendMsgInbox)
+
+        // 大頭貼區塊整合
+        sendImgBlock.appendChild(sendImg)
+
+        // 將訊息、大頭貼加入至整體區塊中
+        sendBlock.appendChild(sendImgBlock)
+        sendBlock.appendChild(sendMsgBlock)
+
+        // 將訊息整體區塊加至
+        Msg_Block.appendChild(sendBlock)
+    }
+
+    // 插入訊息函式(接收方)
+    function Insert_received_Message(img, user, message, time) {
+        // 接收方 - 整體發送區塊
+        let receivedBlock = document.createElement("div");
+        receivedBlock.classList.add("row", "flex-column-reverse", "flex-md-row", "me-1", "d-flex", "d-sm-block-flex", "justify-content-end", "p-1")
+
+        // 接收方 - 大頭貼區塊
+        let receivedImgBlock = document.createElement("div");
+        receivedImgBlock.classList.add("received-chats-img", "col-8", "col-md-4", "justify-content-end", "align-content-end", "align-self-md-center", "align-self-end", "mb-0", "mb-md-4", "p-2", "pb-0")
+
+        // 接收方 - 大頭貼
+        let receivedImg = document.createElement("img");
+        receivedImg.src = img
+
+        // 接收方 - 訊息的外區塊(包含訊息、時間)
+        let receivedMsgBlock = document.createElement("div");
+        receivedMsgBlock.classList.add("msg_block", "col-11", "col-md-8", "d-flex", "justify-content-end", "align-self-md-center", "align-self-end", "p-1", "mt-0", "mt-md-4")
+
+        // 接收方 - 訊息的內區塊
+        let receivedMsgInbox = document.createElement("div");
+        receivedMsgInbox.classList.add("received-msg-inbox", "p-1", "pd-0")
+
+        // 接收方 - 訊息發送者名稱
+        let receivedUser = document.createElement("p")
+        receivedUser.classList.add("m-0", "d-flex", "justify-content-end", "fs-4")
+        receivedUser.innerHTML = user
+
+        // 接收方 - 訊息區塊
+        let receivedMsg = document.createElement("p");
+        receivedMsg.classList.add("received_msg_content", "fs-3", "px-3", "py-2", "m-0", "mb-2", "d-block-flex")
+        receivedMsg.innerHTML = message
+
+        // 接收方 - 時間區塊
+        let receivedTime = document.createElement("span")
+        receivedTime.classList.add("time", "fs-4", "m-0", "d-flex", "justify-content-end")
+        receivedTime.innerHTML = time
+
+        // 訊息區塊整合
+        receivedMsgInbox.appendChild(receivedUser)
+        receivedMsgInbox.appendChild(receivedMsg)
+        receivedMsgInbox.appendChild(receivedTime)
+        receivedMsgBlock.appendChild(receivedMsgInbox)
+
+        // 大頭貼區塊整合
+        receivedImgBlock.appendChild(receivedImg)
+
+        // 將訊息、大頭貼加入至整體區塊中
+        receivedBlock.appendChild(receivedMsgBlock)
+        receivedBlock.appendChild(receivedImgBlock)
+
+        // 將訊息整體區塊加至
+        Msg_Block.appendChild(receivedBlock)
+    }
+</script>
+{% endblock JS %}

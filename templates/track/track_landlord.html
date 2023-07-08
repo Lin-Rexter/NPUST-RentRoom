@@ -1,0 +1,194 @@
+{# 要繼承的模板 #}
+{% extends "./layouts/base.html" %}
+
+{# 設置網頁的logo #}
+{% block Web_Icon %} https:// {% endblock Web_Icon %}
+
+{# 設置網頁標題 #}
+{% block Title %}房東資料{% endblock Title%} 　　<!--お疲れ様でした-->
+
+{# 設置網頁CSS #}
+{% block CSS %}
+{# super(): 繼承原本模板設定的 #} 　　
+{{ super() }}
+
+<!-- Custom Style (自訂的CSS，只需更改filename)-->
+<link rel="stylesheet" href="{{ url_for('static', filename='./css/') }}" />
+{% endblock CSS %}
+
+
+<div class="col-12 col-md-11">
+    {# 網頁主區塊 #}
+    {% block Outer_Main %}
+    <main id="Main" class="row d-flex justify-content-center glass_morphism rounded rounded-5">
+        {% block Main %}
+        <article class="col-11">
+            <div class="row">
+                <div class="col-12 d-flex justify-content-center fs-1 fw-bold align-items-center">
+                    <i class="fa-solid fa-list" style="color: #f5b91f;"></i>
+                    <p class="m-0 p-0 ms-3">房東追蹤列表</p>
+                </div>
+                <div class="col-12">
+                    <hr class="border: solid 2px black;">
+                </div>
+                <div class="col-12">
+                    <div class="row d-flex gx-2 justify-content-center justify-content-md-evenly">
+                        <!-- 左半部（追蹤的房東列表） -->
+                        <div class="col-12 col-sm-10 col-md-5 col-xl-4">
+                            <div class="row">
+                                <!-- 上半部 - 標題區塊 -->
+                                <div class="col-12 d-flex justify-content-center">
+                                    <p class="fw-bold fs-2 title">房東</p>
+                                </div>
+
+                                <!-- 下半部 - 列表區塊 -->
+                                <div class="outer rounded rounded-4 border border-4 border-info"
+                                    style="max-height: 40rem;">
+                                    <div class="col-12 overflow-auto" style="height: 100%;">
+                                        <div class="list list-group justify-content-center row-cols-1 fs-3"
+                                            id="list-tab" role="tablist">
+                                            <!-- 列出所有追蹤的房東 -->
+                                            {% for item in notify_list %}
+                                            <!-- 
+                                                    1. id連結到右半部的aria-labelledby: list_{{ item['user'].split('@')[1] }}_list
+                                                    2. href跟aria-controls連結到右半部的id: list_{{ item['user'].split('@')[1] }}
+                                                    -->
+                                            <a class="list-group-item list-group-item-action {{ 'active' if notify_list.index(item) == 0 }} align-items-center justify-content-between"
+                                                id="list_{{ item['user'].split('@')[1] }}_list" data-bs-toggle="list"
+                                                href="#list_{{ item['user'].split('@')[1] }}" role="tab"
+                                                aria-controls="list_{{ item['user'].split('@')[1] }}">
+                                                <div class="row d-flex p-0 m-0 justify-content-around">
+                                                    <!-- 左半部(房東id) -->
+                                                    <p
+                                                        class="col-12 col-md-8 fw-bold fs-3 align-content-between align-items-center align-self-center p-0 w-0 m-0">
+                                                        <i class="fa-solid fa-user"></i> {{ item['user'] }}
+                                                    </p>
+                                                    <!-- 右半部(移除按鈕、訊息數量) -->
+                                                    <div class="col-12 col-md-4">
+                                                        <div class="row d-flex justify-content-center">
+                                                            <!-- 訊息數量 -->
+                                                            <span
+                                                                class="col-8 badge text-danger btn btn-warning rounded-pill fs-4 d-flex w-25 m-auto justify-content-center align-content-center align-items-center">
+                                                                {{ item['content'] | length }}
+                                                            </span>
+                                                            <!--div class="col-0 col-sm-1 vr mx-4 text-black ms-1 me-1"
+                                                                        style="width:2px;">
+                                                                    </div-->
+                                                            <!-- 移除按鈕 -->
+                                                            <button type="button"
+                                                                class="col-4 hover_white btn btn-outline-danger fs-2 border border-3 border-danger rounded rounded-3">
+                                                                <i class="fa-solid fa-trash"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- 右半部（房東的消息列表） -->
+                        <div class="col-12 col-sm-10 col-md-6 col-xl-7 p-0 mt-2 mt-md-0">
+                            <div class="row">
+                                <!-- 上半部 - 訊息標題區塊 -->
+                                <div class="col-12 d-flex justify-content-center">
+                                    <p class="fw-bold fs-2 title">@XXX 的 訊息</p>
+                                </div>
+
+                                <!-- 下半部 - 訊息列表區塊 -->
+                                <div class="outer rounded rounded-4 border border-4 border-success"
+                                    style="max-height: 60rem;">
+                                    <div class="col-12 overflow-auto" style="height: 100%;">
+                                        <div class="tab-content overflow-auto" id="nav-tabContent">
+                                            <!-- 列出所有房東的訊息  -->
+                                            {% for item in notify_list%}
+                                            <div class="tab-pane fade {{ 'show active' if notify_list.index(item) == 0 }} "
+                                                id="list_{{ item['user'].split('@')[1] }}" role="tabpanel"
+                                                aria-labelledby="list_{{ item['user'].split('@')[1] }}_list">
+                                                <!-- 使用手風琴 (Accordion)的下拉式選單 -->
+                                                <div class="accordion" id="accordionExample">
+                                                    <!-- 列出每個房東的所有訊息 -->
+                                                    {% for msg in item['content'] %}
+                                                    <!--
+                                                                1. 標題區塊的id連結到訊息區塊的aria-labelledby: heading_{{ item['content'].index(msg) }}_{{ item['user'] }}
+                                                                2. 標題區塊的data-bs-target跟aria-controls連結到訊息區塊的id: collapse{{ item['content'].index(msg) }}_{{ item['user'].split('@')[1] }}
+                                                            -->
+                                                    <div class="accordion-item">
+                                                        <!-- 外層(標題、時間) -->
+                                                        <h2 class="accordion-header"
+                                                            id="heading_{{ item['content'].index(msg) }}_{{ item['user'] }}">
+                                                            <button class="accordion-button fw-bold fs-3" type="button"
+                                                                data-bs-toggle="collapse"
+                                                                data-bs-target="#collapse{{ item['content'].index(msg) }}_{{ item['user'].split('@')[1] }}"
+                                                                aria-expanded="{{ 'true' if item['content'].index(msg) == 0 else 'false' }}"
+                                                                aria-controls="collapse{{ item['content'].index(msg) }}_{{ item['user'].split('@')[1] }}">
+                                                                <div class="d-flex row w-100">
+                                                                    <span
+                                                                        class="col-12 col-sm-7 col-md-6 col-lg-7 col-xl-8 col-xxl-9">
+                                                                        <!-- 標題 -->
+                                                                        <i class="fa-solid fa-message fs-2"
+                                                                            style="color: #61c3f4;"></i>
+                                                                        {{ msg["title"] }}
+                                                                    </span>
+                                                                    <span
+                                                                        class="col-12 col-sm-5 col-md-6 col-lg-5 col-xl-4 col-xxl-3 mt-2 mt-sm-0 me-5 ms-auto justify-content-end d-flex">
+                                                                        <!-- 時間 -->
+                                                                        {{ msg["time"] }}
+                                                                    </span>
+                                                                </div>
+                                                            </button>
+                                                        </h2>
+                                                        <!-- 內層(訊息區塊) -->
+                                                        <div id="collapse{{ item['content'].index(msg) }}_{{ item['user'].split('@')[1] }}"
+                                                            class="accordion-collapse collapse"
+                                                            aria-labelledby="heading_{{ item['content'].index(msg) }}_{{ item['user'] }}"
+                                                            data-bs-parent="#accordionExample">
+                                                            <div class="accordion-body overflow-auto">
+                                                                <!-- 訊息 -->
+                                                                <p class="fs-3">{{ msg["message"] }}</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </article>
+        {% endblock Main %}
+    </main>
+    {% endblock Outer_Main %}
+</div>
+
+<div class="col-12 col-md-11">
+    <footer id="Footer" class="row fw-bold d-flex justify-content-around">
+        {% block Footer %}
+        <div class="col border border-dark me-2">
+            <p>最後修改: 2023-05-16</p>
+        </div>
+
+        <div class="col border border-dark me-2">
+            <p>待新增</p>
+        </div>
+
+        <div class="col border border-dark me-2">
+            <p>待新增</p>
+        </div>
+        {% endblock Footer %}
+    </footer>
+</div>
+
+{# 網頁JS #}
+{% block JS %}
+    {{ super() }}
+{% endblock JS %}

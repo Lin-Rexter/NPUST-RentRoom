@@ -1,0 +1,60 @@
+{# 要繼承的模板 #} 
+{% extends "./layouts/base.html" %}
+
+{# 設置網頁的logo #} 
+{% block Web_Icon %} https:// {% endblock Web_Icon %}
+
+{# 設置網頁標題 #} 
+{% block Title %}房東資料{% endblock Title%} 
+
+{# 設置網頁CSS #} 
+{% block CSS %} 
+    {# super(): 繼承原本模板設定的 #} 
+    {{ super() }}
+
+    <!-- Custom Style (自訂的CSS，只需更改filename)-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='./css/') }}"> 
+{% endblock CSS %}
+
+{# 網頁主區塊 #}
+{% block Outer_Main %}
+    <main id="Main" class="row d-flex justify-content-center glass_morphism rounded rounded-5">
+        {% block Main %}
+            <div class="col-12 col-sm-10 col-md-8 col-lg-6">
+                <div class="profile-header">
+                    <img src="./static/images/cb.jpg" alt="個人照片" >
+                    <h1>蟹老闆</h1>
+                    <p>蟹堡王房東</p>
+                </div iv>
+                <div class="profile-nav">
+                    <a href="#">內容</a>
+                </div>
+                <div class="profile-content" >
+                    <h2>動態</h2>
+                    <div class="post" style="background:rgba(255, 255, 255, 0.2);">
+                        <h3>電話</h3>
+                        <p>0912345678</p>
+                        <p class="post-footer">更新日期: 2023年5月12日</p>
+                        <h3>line</h3>
+                        <p>id:0912345678</p>
+                        <p class="post-footer">更新日期: 2023年5月10日</p>
+                        <h3>email</h3>
+                        <p>MrKrabss19@gmail.com</p>
+                        <p class="post-footer">更新日期: 2023年5月11日</p>
+                    </div>
+                    <input type="button" class="cancel-btn" onclick="location.href='/private_chat'" value="私訊">
+                    <input type="submit" value="檢舉">
+                </div>
+            </div>
+        {% endblock Main %}
+    </main>
+{% endblock Outer_Main %}
+
+{# 網頁腳尾 #}
+{% block Footer %}
+{% endblock Footer %}
+
+{# 網頁JS #}
+{% block JS %}
+    {{ super() }}
+{% endblock JS %}

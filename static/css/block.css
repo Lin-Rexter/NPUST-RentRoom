@@ -29,7 +29,7 @@ body:has(.outer)::before {
 
 /*
 body {
-  filter: brightness(200%) !important;
+    filter: brightness(200%) !important;
 }
 */
 
@@ -44,8 +44,13 @@ main {
 
 h1 {
     font-weight: normal;
+    font-size: calc(1vw + 2rem);
     letter-spacing: -1px;
     color: #34495e;
+}
+
+#nav ul li>a{
+    color:rgb(110, 213, 221) !important;
 }
 
 .outer {

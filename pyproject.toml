@@ -1,14 +1,31 @@
 [tool.poetry]
 name = "屏科租屋網"
-version = "0.0.1"
+version = "0.5.0"
 description = "提供屏科大的學生租屋或讓房東刊登房屋的平台"
-authors = ["Lin-Rexter <aaaa35963596@gmail.com>"]
+keywords = ["NPUST", "RentRoom"]
+authors = [
+	"aaaa35963596@gmail.com",
+	"a8720807a3@gmail.com",
+	"b11056031@gmail.com",
+	"avx5082@gmail.com",
+	"billy85977@gmail.com",
+	"henry6805@gmail.com"
+]
 license = "MIT"
 readme = "README.md"
+repository = "https://github.com/Lin-Rexter/NPUST-RentRoom"
 
 [tool.poetry.dependencies]
 python = "^3.9"
-flask = "^2.3.2"
+python-dotenv = "^1.0.0"
+motor = "^3.1.2"
+pymongo = "^4.3.3"
+nest-asyncio = "^1.5.6"
+flask = {extras = ["async"], version = "^2.3.2"}
+flask-socketio = "^5.3.4"
+eventlet = "^0.33.3"
+numpy = "^1.25.0"
+webauthn = "^1.8.1"
 
 
 [build-system]

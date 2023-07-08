@@ -1,0 +1,483 @@
+{#
+使用網頁模板繼承寫法，減少重複性建立
+{% block xxx }代表從模板設定的可自訂內容區塊
+#}
+
+{# 要繼承的模板 #}
+{% extends "./layouts/base.html" %}
+
+{# 設置網頁的logo #}
+{% block Web_Icon %} https:// {% endblock Web_Icon %}
+
+{% block Head %}
+{# 因使用block Head區塊繼承，所以須使用super()繼承模板的內容，如果沒有加super()，只會留下如下方的style #}
+{{ super() }}
+
+{# 從繼承的模板Head區塊裡繼續加上自訂內容 #}
+<!--
+    <style>
+        .test {
+            all: inherit;
+            font-weight: bold;
+        }
+    </style>
+    -->
+{% endblock Head %}
+
+{# 設置網頁標題 #}
+{% block Title %}首頁{% endblock Title%}
+
+{# 設置網頁CSS #}
+{% block CSS %}
+{# super(): 繼承原本模板設定的 #}
+{{ super() }}
+
+<!-- Custom Style (自訂的CSS，只需更改filename)-->
+<link rel="stylesheet" href="{{ url_for('static', filename='./css/system_Managed.css') }}" defer>
+{% endblock CSS %}
+
+{# 跑馬燈 #}
+{% block ticker %}
+{% endblock ticker %}
+
+
+{# 網頁主區塊 #}
+{% block Main_Main %}
+<div id="Outer_Main" class="col-12">
+    {% block Outer_Main %}
+    <main id="Main"
+        class="row d-flex justify-content-center align-content-center align-items-center px-3 rounded rounded-4">
+        {% block Main %}
+        <div class="col-12 py-4">
+            <div class="row d-flex align-content-center align-items-center justify-content-center gx-5 flex-column flex-sm-row">
+                <!-- 功能選單 (左區塊) -->
+                <div class="col-9 col-md-3 mt-0 mt-md-5">
+                    <div class="manage_list list-group p-3" id="list-tab" role="tablist">
+                        <a class="list-group-item list-group-item-action active btn btn-outline-secondary fs-1 p-5 my-4 custom-btn btn-6"
+                            id="tenant-manage-list" data-bs-toggle="list" href="#tenant-manage" role="tab"
+                            aria-controls="tenant-manage">
+                            管理租客資料
+                        </a>
+                        <a class="list-group-item list-group-item-action btn btn-outline-secondary fs-1 p-5 mb-4 custom-btn btn-6"
+                            id="list-review-list" data-bs-toggle="list" href="#review-manage" role="tab"
+                            aria-controls="review-manage">
+                            管理評價訊息
+                        </a>
+                        <a class="list-group-item list-group-item-action btn btn-outline-secondary fs-1 p-5 mb-4 custom-btn btn-6"
+                            id="list-report-list" data-bs-toggle="list" href="#report-manage" role="tab"
+                            aria-controls="report-manage">
+                            管理檢舉訊息
+                        </a>
+                        <a class="list-group-item list-group-item-action btn btn-outline-secondary fs-1 p-5 mb-4 custom-btn btn-6"
+                            id="list-feedback-list" data-bs-toggle="list" href="#feedback-manage" role="tab"
+                            aria-controls="feedback-manage">
+                            管理回報訊息
+                        </a>
+                        <a class="list-group-item list-group-item-action btn btn-outline-secondary fs-1 p-5 mb-4 custom-btn btn-6"
+                            id="list-block-list" data-bs-toggle="list" href="#block-manage" role="tab"
+                            aria-controls="block-manage">
+                            黑名單管理
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 功能操作區(右區塊) -->
+                <div class="col-10 col-md-9">
+                    <div class="tab-content" id="nav-tabContent">
+                        <!-- 租客資料區塊 -->
+                        <div class="tab-pane fade show active row gy-4" id="tenant-manage" role="tabpanel"
+                            aria-labelledby="tenant-manage-list">
+                            <!-- 租客資料搜尋 -->
+                            <div class="col d-flex justify-content-end">
+                                <div class="row d-flex justify-content-center">
+                                    <p class="col-12 fs-2 fw-bold text-primary">尋找租客資料:</p>
+                                    <div
+                                        class="d-flex gy-md-0 flex-wrap flex-xl-nowrap align-content-center align-items-center">
+                                        <input id="tenant_search" class="form-control me-2 fs-2 mb-2 mb-xl-auto"
+                                            type="search" placeholder="Search" aria-label="Search">
+                                        <button
+                                            class="btn col-auto col-xl-4 col-xxl-3 btn-outline-success d-flex fw-bold fs-3 justify-content-evenly align-items-center"
+                                            type="submit">
+                                            搜尋
+                                            <i class="fa-solid fa-magnifying-glass fa-beat-fade fs-2"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- 分隔線 -->
+                            <div class="hr"></div>
+                            <!-- 租客資料表格 -->
+                            <div class="outer ">
+                                <div class="table-container">
+                                    <table class="rwd-table">
+                                        <thead>
+                                            <tr>
+                                                <th>使用者ID</th>
+                                                <th>姓名(Name)</th>
+                                                <th>電話(Phone)</th>
+                                                <th>Email</th>
+                                                <th>第三方平台聯絡資訊(3rd social)</th>
+                                                <th>出生日期(Birthday)</th>
+                                                <th>身分證字號(Identity number)</th>
+                                                <th>操作</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tenant_body">
+                                            <tr>
+                                                <td>@qppylDGQe6</td>
+                                                <td>沈京斌</td>
+                                                <td>0987145236</td>
+                                                <td>oyW900eY@gmail.com</td>
+                                                <td>https://line.me/ti/p/rZsy8NaftP</td>
+                                                <td>2000/01/01</td>
+                                                <td>T122877665</td>
+                                                <td class="row d-flex gy-3 flex-row">
+                                                    <button
+                                                        class="nav-link fw-bold text-white btn btn-warning py-2 px-3"
+                                                        type="button" id="edit" onclick="editRow(this)">
+                                                        <i class="fa-solid fa-pen-to-square"></i>
+                                                        編輯
+                                                    </button>
+                                                    <button class="nav-link fw-bold text-white btn btn-danger py-2 px-3"
+                                                        type="button" id="remove" onclick="deleteRow(this)">
+                                                        <i class="fa-solid fa-trash"></i>
+                                                        移除
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>@tnNT1dmZhF</td>
+                                                <td>史珍香</td>
+                                                <td>0966123954</td>
+                                                <td>G7MmMfEl@gmail.com</td>
+                                                <td>https://line.me/ti/p/uPaQmY5JWS</td>
+                                                <td>1997/04/04</td>
+                                                <td>H255366779</td>
+                                                <td class="row d-flex gy-3 flex-row">
+                                                    <button
+                                                        class="nav-link fw-bold text-white btn btn-warning py-2 px-3"
+                                                        type="button" id="edit" onclick="editRow(this)">
+                                                        <i class="fa-solid fa-pen-to-square"></i>
+                                                        編輯
+                                                    </button>
+                                                    <button class="nav-link fw-bold text-white btn btn-danger py-2 px-3"
+                                                        type="button" id="remove" onclick="deleteRow(this)">
+                                                        <i class="fa-solid fa-trash"></i>
+                                                        移除
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>@eoZcxfuhUx</td>
+                                                <td>甘禮良</td>
+                                                <td>0934516859</td>
+                                                <td>kfjdjd@gmail.com</td>
+                                                <td>https://line.me/ti/p/0xnRNKrs6G</td>
+                                                <td>1999/03/03</td>
+                                                <td>A110655872</td>
+                                                <td class="row d-flex gy-3 flex-row">
+                                                    <button
+                                                        class="nav-link fw-bold text-white btn btn-warning py-2 px-3"
+                                                        type="button" id="edit" onclick="editRow(this)">
+                                                        <i class="fa-solid fa-pen-to-square"></i>
+                                                        編輯
+                                                    </button>
+                                                    <button class="nav-link fw-bold text-white btn btn-danger py-2 px-3"
+                                                        type="button" id="remove" onclick="deleteRow(this)">
+                                                        <i class="fa-solid fa-trash"></i>
+                                                        移除
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            {% for item in tenant_info %}
+                                            <tr>
+                                                <td data-th="使用者ID">{{ item["user_id"] }}</td>
+                                                <td data-th="姓名(Name)">{{ item["name"] }}</td>
+                                                <td data-th="電話(Phone)">{{ item["phone"] }}</td>
+                                                <td data-th="Email">{{ item["email"] }}</td>
+                                                <td data-th="第三方平台聯絡資訊(3rd social)">{{ item["social"] }}</td>
+                                                <td data-th="出生日期(Birthday)">{{ item["birthday"] }}</td>
+                                                <td data-th="身分證字號(Identity number)">{{ item["ID_number"] }}</td>
+                                                <td class="row d-flex gy-3 flex-row">
+                                                    <button
+                                                        class="nav-link fw-bold text-white btn btn-warning py-2 px-3"
+                                                        type="button" id="edit" onclick="editRow(this)">
+                                                        <i class="fa-solid fa-pen-to-square"></i>
+                                                        編輯
+                                                    </button>
+                                                    <button class="nav-link fw-bold text-white btn btn-danger py-2 px-3"
+                                                        type="button" id="remove" onclick="deleteRow(this)">
+                                                        <i class="fa-solid fa-trash"></i>
+                                                        移除
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 評價訊息區塊 -->
+                        <div class="tab-pane fade row gy-3" id="review-manage" role="tabpanel"
+                            aria-labelledby="list-review-list">
+                            <!-- 評價資料搜尋 -->
+                            <div class="col d-flex justify-content-end">
+                                <div class="row d-flex justify-content-center">
+                                    <p class="col-12 fs-2 fw-bold text-primary">尋找評價資料:</p>
+                                    <div
+                                        class="d-flex gy-md-0 flex-wrap flex-xl-nowrap align-content-center align-items-center">
+                                        <input id="review_search" class="form-control me-2 fs-2 mb-2 mb-xl-auto"
+                                            type="search" placeholder="Search" aria-label="Search">
+                                        <button
+                                            class="btn col-auto col-xl-4 col-xxl-3 btn-outline-success d-flex fw-bold fs-3 justify-content-evenly align-items-center"
+                                            type="submit">
+                                            搜尋
+                                            <i class="fa-solid fa-magnifying-glass fa-beat-fade fs-2"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="hr"></div>
+                            <div class="outer">
+                                <div class="table-container">
+                                    <table class="rwd-table">
+                                        <thead>
+                                            <tr>
+                                                <th>評價等級</th>
+                                                <th>評價內容</th>
+                                                <th>評價時間</th>
+                                                <th>評價資料ID</th>
+                                                <th>房間ID</th>
+                                                <th>租客ID</th>
+                                                <th>操作</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="review_list" id="review_body">
+                                            {% for item in review %}
+                                            <tr>
+                                                <td data-th="評價等級">{{ item["level"] }}</td>
+                                                <td data-th="評價內容">{{ item["content"] }}</td>
+                                                <td data-th="評價時間">{{ item["Time"] }}</td>
+                                                <td data-th="評價資料ID">{{ item["rId"] }}</td>
+                                                <td data-th="房間ID">{{ item["hId"] }}</td>
+                                                <td data-th="租客ID">{{ item["tId"] }}</td>
+                                                <td class="row d-flex gy-3 flex-row">
+                                                    <button
+                                                        class="nav-link fw-bold text-white btn btn-warning py-2 px-3"
+                                                        type="button" id="edit" onclick="editRow(this)">
+                                                        <i class="fa-solid fa-pen-to-square"></i>
+                                                        編輯
+                                                    </button>
+                                                    <button class="nav-link fw-bold text-white btn btn-danger py-2 px-3"
+                                                        type="button" id="remove" onclick="deleteRow(this)">
+                                                        <i class="fa-solid fa-trash"></i>
+                                                        移除
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- 檢舉訊息區塊 -->
+                        <div class="tab-pane fade row gy-3" id="report-manage" role="tabpanel"
+                            aria-labelledby="list-report-list">
+                            <!-- 檢舉資料搜尋 -->
+                            <div class="col d-flex justify-content-end">
+                                <div class="row d-flex justify-content-center">
+                                    <p class="col-12 fs-2 fw-bold text-primary">尋找檢舉資料:</p>
+                                    <div
+                                        class="d-flex gy-md-0 flex-wrap flex-xl-nowrap align-content-center align-items-center">
+                                        <input id="report_search" class="form-control me-2 fs-2 mb-2 mb-xl-auto"
+                                            type="search" placeholder="Search" aria-label="Search">
+                                        <button
+                                            class="btn col-auto col-xl-4 col-xxl-3 btn-outline-success d-flex fw-bold fs-3 justify-content-evenly align-items-center"
+                                            type="submit">
+                                            搜尋
+                                            <i class="fa-solid fa-magnifying-glass fa-beat-fade fs-2"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- 分隔線 -->
+                            <div class="hr"></div>
+                            <div class="outer">
+                                <div class="table-container">
+                                    <table class="rwd-table">
+                                        <thead>
+                                            <tr>
+                                                <th>檢舉資料ID</th>
+                                                <th>舉報人ID</th>
+                                                <th>房間ID</th>
+                                                <th>舉報時間</th>
+                                                <th>舉報內容</th>
+                                                <th>操作</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="report_list" id="report_body">
+                                            {% for item in report %}
+                                            <tr>
+                                                <td data-th="檢舉資料ID">{{ item["rId"] }}</td>
+                                                <td data-th="舉報人ID">{{ item["reporter_id"] }}</td>
+                                                <td data-th="房間ID">{{ item["hId"] }}</td>
+                                                <td data-th="舉報時間">{{ item["Time"] }}</td>
+                                                <td data-th="舉報內容">{{ item["rContent"] }}</td>
+                                                <td class="row d-flex gy-3 flex-row">
+                                                    <button
+                                                        class="nav-link fw-bold text-white btn btn-warning py-2 px-3"
+                                                        type="button" id="edit" onclick="editRow(this)">
+                                                        <i class="fa-solid fa-pen-to-square"></i>
+                                                        編輯
+                                                    </button>
+                                                    <button class="nav-link fw-bold text-white btn btn-danger py-2 px-3"
+                                                        type="button" id="remove" onclick="deleteRow(this)">
+                                                        <i class="fa-solid fa-trash"></i>
+                                                        移除
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- 回報訊息區塊 -->
+                        <div class="tab-pane fade row gy-3" id="feedback-manage" role="tabpanel"
+                            aria-labelledby="list-feedback-list">
+                            <!-- 回報資料搜尋 -->
+                            <div class="col d-flex justify-content-end">
+                                <div class="row d-flex justify-content-center">
+                                    <p class="col-12 fs-2 fw-bold text-primary">尋找回報資料:</p>
+                                    <div
+                                        class="d-flex gy-md-0 flex-wrap flex-xl-nowrap align-content-center align-items-center">
+                                        <input id="feedback_search" class="form-control me-2 fs-2 mb-2 mb-xl-auto"
+                                            type="search" placeholder="Search" aria-label="Search">
+                                        <button
+                                            class="btn col-auto col-xl-4 col-xxl-3 btn-outline-success d-flex fw-bold fs-3 justify-content-evenly align-items-center"
+                                            type="submit">
+                                            搜尋
+                                            <i class="fa-solid fa-magnifying-glass fa-beat-fade fs-2"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- 分隔線 -->
+                            <div class="hr"></div>
+
+                            <div class="outer">
+                                <div class="table-container">
+                                    <table class="rwd-table">
+                                        <thead>
+                                            <tr>
+                                                <th>回報資料ID</th>
+                                                <th>租客ID</th>
+                                                <th>房東ID</th>
+                                                <th>回報時間</th>
+                                                <th>回報內容</th>
+                                                <th>操作</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="feedback_list" id="feedback_body">
+                                            {% for item in feedback %}
+                                            <tr>
+                                                <td data-th="回報資料ID">{{ item["fId"] }}</td>
+                                                <td data-th="租客ID">{{ item["tId"] }}</td>
+                                                <td data-th="房東ID">{{ item["lId"] }}</td>
+                                                <td data-th="回報時間">{{ item["fTime"] }}</td>
+                                                <td data-th="回報內容">{{ item["content"] }}</td>
+                                                <td class="row d-flex gy-3 flex-row">
+                                                    <button
+                                                        class="nav-link fw-bold text-white btn btn-warning py-2 px-3"
+                                                        type="button" id="edit" onclick="editRow(this)">
+                                                        <i class="fa-solid fa-pen-to-square"></i>
+                                                        編輯
+                                                    </button>
+                                                    <button class="nav-link fw-bold text-white btn btn-danger py-2 px-3"
+                                                        type="button" id="remove" onclick="deleteRow(this)">
+                                                        <i class="fa-solid fa-trash"></i>
+                                                        移除
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- 黑名單區塊 -->
+                        <div class="tab-pane fade row gy-3" id="block-manage" role="tabpanel"
+                            aria-labelledby="list-block-list">
+                            <!-- 黑名單資料搜尋 -->
+                            <div class="col d-flex justify-content-end">
+                                <div class="row d-flex justify-content-center">
+                                    <p class="col-12 fs-2 fw-bold text-primary">尋找黑名單資料:</p>
+                                    <div
+                                        class="d-flex gy-md-0 flex-wrap flex-xl-nowrap align-content-center align-items-center">
+                                        <input id="block_search" class="form-control me-2 fs-2 mb-2 mb-xl-auto"
+                                            type="search" placeholder="Search" aria-label="Search">
+                                        <button
+                                            class="btn col-auto col-xl-4 col-xxl-3 btn-outline-success d-flex fw-bold fs-3 justify-content-evenly align-items-center"
+                                            type="submit">
+                                            搜尋
+                                            <i class="fa-solid fa-magnifying-glass fa-beat-fade fs-2"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- 分隔線 -->
+                            <div class="hr"></div>
+                            <div class="outer">
+                                <div class="table-container">
+                                    <table class="rwd-table">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>IP位置</th>
+                                                <th>使用者ID</th>
+                                                <th>新增日期</th>
+                                                <th>狀態</th>
+                                                <th>功能</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="block_list" id="block_body"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endblock Main %}
+    </main>
+    {% endblock Outer_Main %}
+</div>
+{% endblock Main_Main %}
+
+
+{# 網頁腳尾 #}
+{% block Outer_Footer %}
+{% endblock Outer_Footer %}
+
+{# 網頁JS #}
+{% block JS %}
+{# super(): 繼承原本模板設定的 #}
+{{ super() }}
+
+
+<!-- Custom JS (自訂的JS，只需更改filename) -->
+<script src="{{ url_for('static', filename='js/block_list.js') }}"></script>
+<script src="{{ url_for('static', filename='js/system_managed.js') }}"></script>
+{% endblock JS %}

@@ -1,0 +1,186 @@
+{# 要繼承的模板 #}
+{% extends "./layouts/base.html" %}
+
+{# 設置網頁的logo #}
+{% block Web_Icon %} https:// {% endblock Web_Icon %}
+
+{# 設置網頁標題 #}
+{% block Title %}追蹤的房屋{% endblock Title%}
+
+{# 設置網頁CSS #}
+{% block CSS %}
+{# super(): 繼承原本模板設定的 #}
+{{ super() }}
+
+<!--房東管理頁面模板CSS -->
+<link rel="stylesheet" href="{{ url_for('static', filename='./css/tenant_managed.css') }}" />
+
+<style>
+    .image-container {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .image-container img {
+        max-width: 200px;
+    }
+
+    .centered-table {
+        margin: 0 auto;
+    }
+</style>
+{% endblock CSS %}
+
+
+{# 網頁主區塊 #}
+{% block Outer_Main %}
+<main id="Main" class="row d-flex justify-content-center glass_morphism rounded rounded-5">
+    {% block Main %}
+    <article class="col-11">
+        <div class="row">
+            <div class="col-12 d-flex justify-content-center fs-1 fw-bold align-items-center">
+                <i class="fa-solid fa-house fa-beat-fade" style="color: #3684ab;"></i>
+                <p class="m-0 p-0 ms-3">房屋追蹤列表</p>
+            </div>
+            <div class="col-12">
+                <hr class="hr">
+            </div>
+            <div class="col-12">
+                <div class="row d-flex gx-2 justify-content-center justify-content-md-evenly">
+                    <!-- 左半部（追蹤的房東列表） -->
+                    <div class="col-12 col-sm-10 col-md-5 col-xl-4">
+                        <div class="row">
+                            <!-- 上半部 - 標題區塊 -->
+                            <div class="col-12 d-flex justify-content-center">
+                                <p class="fw-bold fs-2 title">房屋</p>
+                            </div>
+
+                            <!-- 下半部 - 列表區塊 -->
+                            <div class="outer rounded rounded-4 border border-4 border-info" style="max-height: 40rem;">
+                                <div class="col-12 overflow-auto" style="height: 100%;">
+                                    <div class="list list-group justify-content-center row-cols-1 fs-3" id="list-tab"
+                                        role="tablist">
+                                        <!-- 列出所有追蹤的房屋 -->
+                                        {% for item in house_list %}
+                                        <!-- 
+                                        1. id連結到右半部的aria-labelledby: list_{{ item['house_id'].split('@')[1] }}_list
+                                        2. href跟aria-controls連結到右半部的id: list_{{ item['house_id'].split('@')[1] }}
+                                        -->
+                                        <a class="list-group-item list-group-item-action {{ 'active' if house_list.index(item) == 0 }} align-items-center justify-content-between"
+                                            id="list_{{ item['house_id'].split('@')[1] }}_list" data-bs-toggle="list"
+                                            href="#list_{{ item['house_id'].split('@')[1] }}" role="tab"
+                                            aria-controls="list_{{ item['house_id'].split('@')[1] }}">
+                                            <div class="row d-flex p-0 m-0 justify-content-around">
+                                                <!-- 左半部(房屋id) -->
+                                                <p
+                                                    class="col-12 col-md-8 fw-bold fs-3 align-content-between align-items-center align-self-center p-0 w-0 m-0">
+                                                    <i class="fa-solid fa-user"></i> {{ item['house_id'] }}
+                                                </p>
+                                                <!-- 右半部(移除按鈕) -->
+                                                <div class="col-12 col-md-4 d-flex justify-content-end ">
+                                                    <!-- 移除按鈕 -->
+                                                    <button type="button"
+                                                        class="hover_white btn btn-outline-danger fs-2 border border-3 border-danger rounded rounded-3">
+                                                        <i class="fa-solid fa-trash"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- 右半部（房屋的消息列表） -->
+                    <div class="col-12 col-sm-9 col-md-6 col-xl-6 p-0 mt-2 mt-md-0">
+                        <div class="row">
+                            <!-- 上半部 - 資訊標題區塊 -->
+                            <div class="col-12 d-flex justify-content-center">
+                                <p class="fw-bold fs-2 title">@XXX 的 房屋資訊</p>
+                            </div>
+
+                            <!-- 下半部 - 資訊列表區塊 -->
+                            <div class="outer rounded rounded-4 border border-4 border-success"
+                                style="max-height: 120rem;">
+                                <div class="col-12" style="height: 100%;">
+                                    <div class="tab-content" id="nav-tabContent">
+                                        <!-- 列出所有房屋的訊息  -->
+                                        {% for item in house_list%}
+                                        <div class="tab-pane fade {{ 'show active' if house_list.index(item) == 0 }} "
+                                            id="list_{{ item['house_id'].split('@')[1] }}" role="tabpanel"
+                                            aria-labelledby="list_{{ item['house_id'].split('@')[1] }}_list">
+                                            <div class="row justify-content-center p-3">
+                                                <!-- 房屋圖片 -->
+                                                <div class="img_container col-10">
+                                                    <img src="{{ item['content']['house_pic'] }}" alt="房屋圖片"
+                                                        title="房屋圖片">
+                                                </div>
+                                                <!-- 房屋資訊 -->
+                                                <div
+                                                    class="house_info col-12 justify-content-center g-4 border border-4 border-info p-3 rounded rounded-4 overflow-auto"
+                                                    style="max-width:75rem;"
+                                                    >
+                                                    <div class="overflow-auto" style="width:100%;">
+                                                        <table class="table table-hover align-middle overflow-auto">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th scope="col">房名</th>
+                                                                    <th scope="col">類型</th>
+                                                                    <th scope="col">坪數</th>
+                                                                    <th scope="col">地址</th>
+                                                                    <th scope="col">租金</th>
+                                                                    <th scope="col">押金</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr class="table-info fs-3">
+                                                                    {% for info_name, house_info in
+                                                                    item['content'].items() %}
+                                                                    {% if info_name != "house_pic" %}
+                                                                    <td>{{ house_info }}</td>
+                                                                    {% endif %}
+                                                                    {% endfor %}
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </article>
+    {% endblock Main %}
+</main>
+{% endblock Outer_Main %}
+
+
+{# 網頁腳尾 #}
+{% block Footer %}
+<div class="col border border-dark me-2">
+    <p>最後修改: 2023-05-16</p>
+</div>
+
+<div class="col border border-dark me-2">
+    <p>待新增</p>
+</div>
+
+<div class="col border border-dark me-2">
+    <p>待新增</p>
+</div>
+{% endblock Footer %}
+
+
+{# 網頁JS #}
+{% block JS %}
+    {{ super() }}
+{% endblock JS %}

@@ -44,21 +44,21 @@ function getRandomDate(start, end) {
 function add_ip(id, ip, name, date, status) {
     black_list.innerHTML += `
         <tr class="ip">
-          <td data-th="ID">${id}</td>
-          <td data-th="IP位置">${ip}</td>
-          <td data-th="使用者ID">@${name}</td>
-          <td data-th="新增日期">${date}</td>
-          <td data-th="狀態">${status}</td>
-          <td data-th="功能">
-            <button
-              class="nav-link fw-bold text-white btn btn-danger remove_ip"
-              type="button"
-              id="remove"
-            >
-              <i class="fa-solid fa-trash"></i>
-              移除
+            <td data-th="ID">${id}</td>
+            <td data-th="IP位置">${ip}</td>
+            <td data-th="使用者ID">@${name}</td>
+            <td data-th="新增日期">${date}</td>
+            <td data-th="狀態">${status}</td>
+            <td data-th="功能">
+                <button
+                    class="nav-link fw-bold text-white btn btn-danger py-2 px-3 remove_ip"
+                    type="button"
+                    id="remove"
+                >
+                    <i class="fa-solid fa-trash"></i>
+                    移除
             </button>
-          </td>
+            </td>
         </tr>`;
 }
 
@@ -76,7 +76,7 @@ function add_many_ip(total) {
                 "zh-TW",
                 options
             ),
-            Status[getRandomInt(0, Status.length-1)]
+            Status[getRandomInt(0, Status.length - 1)]
         );
     }
 }
@@ -103,16 +103,16 @@ function remove_ip() {
 document.addEventListener("click", () => {
     if (black_list.getElementsByTagName("tr").length === 0) {
         black_list.innerHTML += `
-          <tr id="add">
-              <button
-                class="nav-link fw-bold text-white btn btn-info"
-                type="button"
-                onclick="AddIp()"
-              >
-                <i class="fa-solid fa-trash"></i>
-                新增
-              </button>
-          </tr>`;
+            <tr id="add">
+                <button
+                    class="nav-link fw-bold text-white btn btn-info"
+                    type="button"
+                    onclick="AddIp()"
+                >
+                    <i class="fa-solid fa-trash"></i>
+                    新增
+                </button>
+            </tr>`;
     }
 });
 

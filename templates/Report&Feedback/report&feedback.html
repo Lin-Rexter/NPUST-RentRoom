@@ -1,0 +1,177 @@
+{# 要繼承的模板 #}
+{% extends "./layouts/base.html" %}
+
+{# 設置網頁的logo #}
+{% block Web_Icon %} https:// {% endblock Web_Icon %}
+
+{# 設置網頁標題 #}
+{% block Title %}房東資料{% endblock Title%} <!--お疲れ様でした-->
+
+{# 設置網頁CSS #}
+{% block CSS %}
+{# super(): 繼承原本模板設定的 #}
+{{ super() }}
+
+<!-- Custom Style (自訂的CSS，只需更改filename)-->
+<style>
+    input[type=text] {
+        padding: 6px 12px;
+        border-radius: 4px;
+    }
+
+    input[type=submit],
+    input[type=button] {
+        padding: 14px 20px;
+        border-radius: 4px;
+    }
+
+    .write_container {
+        background-color: #e6e7ee;
+        padding: 3rem;
+        border-radius: 8px;
+        box-shadow: 0px 0px 8px 4px #ccc;
+    }
+</style>
+{% endblock CSS %}
+
+{# 網頁主區塊 #}
+{% block Outer_Main %}
+<main id="Main" class="row d-flex justify-content-center">
+    {% block Main %}
+    <article class="col-12">
+        <div class="row justify-content-center gy-5">
+            <!-- 標題 -->
+            <div class="col-11 col-sm-9 col-md-5 d-flex justify-content-center align-content-center soft_title_white">
+                <p class="display-4 my-2">問題回報</p>
+            </div>
+            <!-- 撰寫區塊 -->
+            <form class="col-11 col-md-8 write_container" method='POST' action=''>
+                <!-- 被檢舉/回報者 -->
+                <div class="row d-flex justify-content-end mb-3">
+                    <div class="col-12 col-sm-6 col-md-6 col-lg-5 col-xl-4">
+                        <select class="form-select fs-2 select-items" aria-label="Default select example">
+                            <option selected>選擇被檢舉者</option>
+                            <option value="1">One</option>
+                            <option value="2">Two</option>
+                            <option value="3">Three</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- 撰寫標題 -->
+                <div class="row d-flex justify-content-center mb-5">
+                    <label for="title" class="form-label fs-2 fw-bold">標題：</label>
+                    <input type="text" class="form-control fs-3 soft_text_white" id="title" placeholder="輸入你的標題..." required>
+                </div>
+
+                <!-- 撰寫內容 -->
+                <div class="row d-flex justify-content-center mb-4">
+                    <label for="report" class="form-label fs-2 fw-bold">輸入問題回報的內容：</label>
+                    <textarea class="form-control fs-2 p-3 soft_text_white" id="report" rows="10"
+                        placeholder="輸入你的內容..."></textarea>
+                </div>
+
+                <!--計數字數-->
+                <div class="row mb-3">
+                    <label for="content" class="form-label fs-3">500/<span id="count" class="text-primary">0</span></label>
+                </div>
+
+                <!-- 按扭區塊 -->
+                <div class="row d-flex justify-content-center">
+                    <!-- 取消按紐 -->
+                    <div class='col-12 col-sm-6 col-md-4 d-flex justify-content-center mt-4 mt-sm-5 '>
+                        <a href='' title="取消" target="_self"
+                            class='soft_btn_green btn btn-success fw-bold fs-3 un border border-3 border-success rounded-4'>
+                            <i class="fa-solid fa-ban"></i>
+                            取消
+                        </a>
+                    </div>
+
+                    <!-- 重置按紐 -->
+                    <div class='col-12 col-sm-6 col-md-4 d-flex justify-content-center mt-4 mt-sm-5'>
+                        <button type="reset" href='' title="重置" target="_self"
+                            class='soft_btn_yellow btn btn-warning fw-bold fs-3 un border border-3 border-warning rounded-4'>
+                            <i class="fa-solid fa-rotate-right"></i>
+                            重置
+                        </button>
+                    </div>
+
+                    <!-- 送出按鈕 -->
+                    <div class='col-12 col-sm-6 col-md-4 d-flex justify-content-center mt-4 mt-sm-5'>
+                        <button id="submit" type="submit" title="送出"
+                            class='soft_btn_blue btn btn-primary fw-bold fs-3 un border border-3 border-primary rounded-4'>
+                            <i class="fa-solid fa-right-to-bracket"></i>
+                            送出
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </article>
+
+
+    {% endblock Main %}
+</main>
+{% endblock Outer_Main %}
+
+{# 網頁腳尾 #}
+{% block Outer_Footer %}
+<footer id="Footer" class="row d-flex justify-content-around gy-3">
+    {% block Footer %}
+    <div class="col-12 col-sm-3 border border-dark d-flex justify-content-center m-sm-0">
+        <p>最後修改: 2023-06-17</p>
+    </div>
+
+    <div class="col-12 col-sm-3 border border-dark d-flex justify-content-center m-sm-0">
+        <p>待新增</p>
+    </div>
+
+    <div class="col-12 col-sm-3 border border-dark d-flex justify-content-center m-sm-0">
+        <p>待新增</p>
+    </div>
+    {% endblock Footer %}
+</footer>
+{% endblock Outer_Footer %}
+
+{# 網頁JS #}
+{% block JS %}
+{{ super() }}
+
+<script>
+    // Bootstrap Select，使用方式: https://github.com/snapappointments/bootstrap-select#usage
+    // <script src="https://ajax.googleapis.com/"$('.select_user').selectpicker('val', 'Mustard');
+
+    let report = document.getElementById('report'); // 撰寫區塊
+    let count = document.getElementById('count'); // 計數字數
+    let submit = document.getElementById('submit'); // 提交按鈕
+
+    // 紀錄撰寫區塊字數
+    var len = report.value.length;
+
+    // 改變計數字數
+    report.addEventListener('input', function () {
+        // 更新字數
+        len = this.value.length;
+
+        // 顯示計數字數
+        count.innerHTML = len;
+
+        // 判斷字數是否超過500字
+        if (len > 500) {
+            count.classList.remove('text-primary');
+            count.classList.toggle('text-danger')
+        } else {
+            count.classList.remove('text-danger');
+            count.classList.add('text-primary');
+        }
+    });
+
+    // 當按下提交按鈕，檢查字數長度
+    submit.addEventListener('click', () => {
+        if (len > 500) {
+            show_toast("<p class='text-danger fs-2'>字數超過500!</p>", 'warning');
+            e.preventDefault();
+        }
+    })
+</script>
+{% endblock JS %}

@@ -1,0 +1,346 @@
+{# 要繼承的模板 #}
+{% extends "./layouts/base.html" %}
+
+{# 設置網頁的logo #}
+{% block Web_Icon %} https:// {% endblock Web_Icon %}
+
+{% block Head %}
+{# 因使用block Head區塊繼承，所以須使用super()繼承模板的內容，如果沒有加super()，只會留下如下方的style #}
+{{ super() }}
+
+
+<!-- simple webauthn -->
+<script src="https://unpkg.com/@simplewebauthn/browser/dist/bundle/index.umd.min.js"></script>
+
+<script>
+    const { startAuthentication } = SimpleWebAuthnBrowser;
+    /**
+     * Conditional UI test
+     *
+     * 1. Start Chrome Canary 105+ with the requisite Conditional UI flag:
+     *
+     * open -a /Applications/Google\ Chrome\ Canary.app --args --enable-features=WebAuthenticationConditionalUI
+     *
+     * 2. Create an entry in chrome://settings/passwords (temporary requirement) e.g.:
+     *
+     *   - Site: https://example.simplewebauthn.dev/
+     *   - Username: user@example.simplewebauthn.dev
+     *   - Password: whatever
+     *
+     * 3. Register a credential
+     *
+     * 4. Reload the page
+     *
+     * 5. Interact with the username field above the Authenticate button
+     *
+     * Notes:
+     *
+     * I'm currently trying to get to calling WebAuthn as fast as I can here, there's a
+     * Chrome race condition with autofill that sometimes prevents a credential from appearing.
+     *
+     * See: https://bugs.chromium.org/p/chromium/issues/detail?id=1322967&q=component%3ABlink%3EWebAuthentication&can=2
+     *
+     * I've been assured this race condition is temporary, at which point we'll probably be able
+     * to include this just before </body> as we'd typically do. And at that point we can
+     * probably use async/await as well for more sane-looking code.
+     */
+    fetch('/generate-authentication-options')
+        .then(resp => resp.json())
+        .then(opts => {
+            console.log('Authentication Options (Autofill)', opts);
+            startAuthentication(opts, true)
+                .then(async asseResp => {
+                    // We can assume the DOM has loaded by now because it had to for the user to be able
+                    // to interact with an input to choose a credential from the autofill
+                    const elemSuccess = document.querySelector('#authSuccess');
+                    const elemError = document.querySelector('#authError');
+                    const elemDebug = document.querySelector('#authDebug');
+
+                    printDebug(
+                        elemDebug,
+                        'Authentication Response (Autofill)',
+                        JSON.stringify(asseResp, null, 2),
+                    );
+
+                    const verificationResp = await fetch('/verify-authentication', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(asseResp),
+                    });
+
+                    const verificationJSON = await verificationResp.json();
+                    printDebug(
+                        elemDebug,
+                        'Server Response (Autofill)',
+                        JSON.stringify(verificationJSON, null, 2),
+                    );
+
+                    if (verificationJSON && verificationJSON.verified) {
+                        elemSuccess.innerHTML = `User authenticated!`;
+                    } else {
+                        elemError.innerHTML = `Oh no, something went wrong! Response: <pre>${JSON.stringify(
+                            verificationJSON,
+                        )}</pre>`;
+                    }
+                })
+                .catch(err => {
+                    console.error('(Autofill)', err);
+                });
+        });
+</script>
+{% endblock Head %}
+
+{# 設置網頁標題 #}
+{% block Title %}首頁{% endblock Title%}
+
+{# 設置網頁CSS #}
+{% block CSS %}
+{# super(): 繼承原本模板設定的 #}
+{{ super() }}
+
+<!-- Custom Style (自訂的CSS，只需更改filename)-->
+<link rel="stylesheet" href="{{ url_for('static', filename='./css/login&signup.css') }}">
+{% endblock CSS %}
+
+{% block ticker %}
+{% endblock ticker %}
+
+{# 網頁主區塊 #}
+{% block Outer_Main %}
+<main class="row d-flex justify-content-center align-content-center mt-5 mb-3">
+    {% block Main %}
+    <div class="col-12 col-sm-10 col-md-9 col-lg-7 col-xl-5 login py-5">
+        <!-- logo -->
+        <div class="row justify-content-center mb-3 mb-sm-5 align-items-center">
+            <i class="col-12 fa-solid fa-house fs-1"></i>
+            <!--img class='col-8 img-fluid'
+                    src=""
+                    alt="屏科租屋網 Logo" title="屏科租屋網 Logo" /-->
+        </div>
+
+        <!-- 標題 -->
+        <div class="row justify-content-center align-items-center m-0 p-0 my-3" title="屏科租屋網-WebAuthn">
+            <hr class='col-12 move-to-right mt-0 mb-auto'>
+            <p class='col-12 col-sm-12 text-center fw-bold fs-1 my-3'>
+                屏科租屋網 ✖ <span class="text-warning bg-secondary rounded-3 p-2">WebAuthn</span>
+            </p>
+            <hr class='col-12 move-to-left mb-0 mt-auto'>
+        </div>
+
+        <!-- 填寫區塊 -->
+        <form class="row gx-5 gx-md-5 gy-4 gy-sm-4 justify-content-center m-0 p-0 my-3" method='POST' action='' onsubmit="stopSubmit(event)">
+            <!-- 輸入框 -->
+            <div class="col-sm-8 floating-content">
+                <input type="text" title="輸入使用者名稱" class="form-control floating-input" autocomplete="webauthn"
+                    id="username" name='username' placeholder=" " autofocus>
+                <label for="username" class="floating-label" id="user_label">
+                    <i class="fa-solid fa-user"></i>
+                    使用者名稱(Username)
+                </label>
+            </div>
+
+            <!-- 登入按鈕 -->
+            <div class='col-12 col-sm-6 col-md-5 d-flex justify-content-center mt-4 mt-sm-5'>
+                <button type="submit" title="登入按鈕" formaction="./action/Login_action"
+                    class='soft_btn_blue btn btn-primary fw-bold fs-3 un border border-3 border-primary rounded-4'>
+                    <i class="fa-solid fa-right-to-bracket"></i>
+                    登入(Authenticate)
+                </button>
+            </div>
+
+            <!-- 註冊按鈕 -->
+            <div class='col-12 col-sm-6 col-md-5 d-flex justify-content-center  mt-4 mt-sm-5'>
+                <a href='./action/Signup_action' title="註冊按鈕" target="_self"
+                    class='soft_btn_green btn btn-success fw-bold fs-3 un border border-3 border-success rounded-4'>
+                    <i class="fa-solid fa-heart"></i>
+                    立即註冊(Register)
+                </a>
+            </div>
+        </form>
+    </div>
+    {% endblock Main %}
+</main>
+{% endblock Outer_Main %}
+
+{# 網頁腳尾 #}
+{% block Footer %}
+<div class="col-12 col-sm-3 border border-dark d-flex justify-content-center m-sm-0">
+    <p>最後修改: 2023-06-21</p>
+</div>
+
+<div class="col-12 col-sm-3 border border-dark d-flex justify-content-center m-sm-0">
+    <p>待新增</p>
+</div>
+
+<div class="col-12 col-sm-3 border border-dark d-flex justify-content-center m-sm-0">
+    <p>待新增</p>
+</div>
+{% endblock Footer %}
+
+{# 網頁JS #}
+{% block JS %}
+{# super(): 繼承原本模板設定的 #}
+{{ super() }}
+
+<script>
+    // 彈出提示框(警告)
+    var toast_Waring = document.getElementById('liveToast-Waring'); // 提示框
+    var message = document.getElementById('toast_message'); // 寫入訊息
+
+    // 彈出提示框(提示)
+    var toast_tip = document.getElementById('liveToast-tip'); // 提示框
+    var message_tip = document.getElementById('toast_message_tip'); // 寫入訊息
+
+    function toast(messages, tip = null) {
+        if (tip) {
+            Toast(toast_tip, message_tip, messages);
+        } else {
+            Toast(toast_Waring, message, messages);
+        }
+    }
+
+    Disable_Spacebar(); // 禁用空白鍵輸入
+
+    const username = new Validation('username', 'user_label', '輸入長度至少5位!', 5);
+    username.enable(); // 啟用警告功能
+
+    const password = new Validation('password', 'pass_label', '輸入長度至少6位', 6);
+    password.enable();
+</script>
+
+<script>
+    const { browserSupportsWebAuthn, startRegistration } = SimpleWebAuthnBrowser;
+
+    function stopSubmit(event) {
+        event.preventDefault();
+    }
+
+    /**
+     * A simple way to control how debug content is written to a debug console element
+     */
+    function printDebug(elemDebug, title, output) {
+        if (elemDebug.innerHTML !== '') {
+            elemDebug.innerHTML += '\n';
+        }
+        elemDebug.innerHTML += `// ${title}\n`;
+        elemDebug.innerHTML += `${output}\n`;
+    }
+
+    // Hide the Begin button if the browser is incapable of using WebAuthn
+    if (!browserSupportsWebAuthn()) {
+        document.querySelector('.controls').style.display = 'none';
+        document.querySelector('.systemError').innerText =
+            "It seems this browser doesn't support WebAuthn...";
+    } else {
+        function hideAuthForm() {
+            document.getElementById('inputUsername').style.display = 'none';
+        }
+
+        /**
+         * Registration
+         */
+        document.querySelector('#btnRegBegin').addEventListener('click', async () => {
+            const elemSuccess = document.querySelector('#regSuccess');
+            const elemError = document.querySelector('#regError');
+            const elemDebug = document.querySelector('#regDebug');
+
+            // Reset success/error messages
+            elemSuccess.innerHTML = '';
+            elemError.innerHTML = '';
+            elemDebug.innerHTML = '';
+
+            const resp = await fetch('/generate-registration-options');
+
+            let attResp;
+            try {
+                const opts = await resp.json();
+
+                printDebug(elemDebug, 'Registration Options', JSON.stringify(opts, null, 2));
+
+                hideAuthForm();
+
+                attResp = await startRegistration(opts);
+                printDebug(elemDebug, 'Registration Response', JSON.stringify(attResp, null, 2));
+            } catch (error) {
+                if (error.name === 'InvalidStateError') {
+                    elemError.innerText = 'Error: Authenticator was probably already registered by user';
+                } else {
+                    elemError.innerText = error;
+                }
+
+                throw error;
+            }
+
+            const verificationResp = await fetch('/verify-registration', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(attResp),
+            });
+
+            const verificationJSON = await verificationResp.json();
+            printDebug(elemDebug, 'Server Response', JSON.stringify(verificationJSON, null, 2));
+
+            if (verificationJSON && verificationJSON.verified) {
+                elemSuccess.innerHTML = `Authenticator registered!`;
+            } else {
+                elemError.innerHTML = `Oh no, something went wrong! Response: <pre>${JSON.stringify(
+                    verificationJSON,
+                )}</pre>`;
+            }
+        });
+
+        /**
+         * Authentication
+         */
+        document.querySelector('#btnAuthBegin').addEventListener('click', async () => {
+            const elemSuccess = document.querySelector('#authSuccess');
+            const elemError = document.querySelector('#authError');
+            const elemDebug = document.querySelector('#authDebug');
+
+            // Reset success/error messages
+            elemSuccess.innerHTML = '';
+            elemError.innerHTML = '';
+            elemDebug.innerHTML = '';
+
+            const resp = await fetch('/generate-authentication-options');
+
+            let asseResp;
+            try {
+                const opts = await resp.json();
+                printDebug(elemDebug, 'Authentication Options', JSON.stringify(opts, null, 2));
+
+                hideAuthForm();
+
+                asseResp = await startAuthentication(opts);
+                printDebug(elemDebug, 'Authentication Response', JSON.stringify(asseResp, null, 2));
+            } catch (error) {
+                elemError.innerText = error;
+                throw new Error(error);
+            }
+
+            const verificationResp = await fetch('/verify-authentication', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(asseResp),
+            });
+
+            const verificationJSON = await verificationResp.json();
+            printDebug(elemDebug, 'Server Response', JSON.stringify(verificationJSON, null, 2));
+
+            if (verificationJSON && verificationJSON.verified) {
+                elemSuccess.innerHTML = `User authenticated!`;
+            } else {
+                elemError.innerHTML = `Oh no, something went wrong! Response: <pre>${JSON.stringify(
+                    verificationJSON,
+                )}</pre>`;
+            }
+        });
+    }
+</script>
+{% endblock JS %}

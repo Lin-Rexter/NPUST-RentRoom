@@ -1,0 +1,84 @@
+.box {
+    position: relative;
+    border: 3.5px solid black;
+    /*display: flex;
+    grid-gap: 10px 10px;*/
+    flex-flow: row wrap;
+    justify-content: space-evenly;
+    align-items: stretch;
+    align-content: center;
+    padding: 1rem;
+    margin: 0 1rem 2rem 1rem;
+}
+
+.box>.img_container,
+.box>.tenant_info,
+.box>.other_info {
+    transition: 0.5s ease-out width;
+}
+
+.box>div:hover {
+    background-color: rgb(235, 235, 235);
+}
+
+.box:hover {
+    background-color: rgb(249, 243, 239);
+}
+
+.img_container {
+    position: relative;
+    display: flex;
+    align-self: center !important;
+    height: 100%;
+    overflow: hidden;
+    z-index: 1;
+    /*line-height: 160px;*/
+    cursor: pointer;
+}
+
+.img_container:hover::after {
+    opacity: 0.2;
+    border: 5px dashed rgb(0, 0, 0);
+}
+
+/*
+.img_container:active {
+    position: absolute;
+    display: flex;
+    top: 50%;
+    transform: scale(2);
+    z-index: 99999 !important;
+}
+*/
+
+.tenant_info {
+    border: 2px solid black;
+    text-align: start;
+    padding: 2rem;
+    cursor: pointer;
+    /*line-height: 160px;*/
+}
+
+.tenant_info p {
+    cursor: text;
+}
+
+.other_info {
+    border: 2px solid black;
+    text-align: center;
+    cursor: pointer;
+    /*line-height: 160px;*/
+}
+
+.other_info p {
+    cursor: text;
+}
+
+hr {
+    /*分隔線樣式*/
+    border: 0;
+    height: 2px;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+}
+
+/* 到這邊都是tenant_managed 的樣式 */

@@ -1,0 +1,232 @@
+.container {
+    max-width: 500 !important;
+    margin: auto;
+    margin-top: 4%;
+    font-family: sans-serif;
+    letter-spacing: 0.5px;
+}
+
+img {
+    max-width: 100%;
+    border-radius: 50%;
+}
+
+.msg-header {
+    border: 1px solid #ccc;
+    width: 100%;
+    height: 10%;
+    border-bottom: none;
+    background-color: #007bff;
+}
+
+.msg-header-img {
+
+    width: 40px;
+    margin-left: 5%;
+    margin-top: 12px;
+    float: left;
+}
+
+.active {
+    width: 120px;
+    float: left;
+    margin-top: 10px;
+}
+
+.active h4 {
+    font-size: 20px;
+    margin-left: 10px;
+    color: #fff
+}
+
+.active h6 {
+    font-size: 10px;
+    margin-left: 10px;
+    line-height: 2px;
+    color: #fff;
+}
+
+.header-icons {
+    width: 120px;
+    float: right;
+    margin-top: 12px;
+    margin-right: 10px;
+}
+
+.header-icons .fa {
+    color: #fff;
+    cursor: pointer;
+    margin: 10px;
+}
+
+/* 通訊錄(左) */
+/*
+.people_list {
+    box-shadow: 0px 3px 8px 4px #949494;
+}
+*/
+
+.people_list a {
+    border: 3.5px solid rgba(210, 230, 225) !important;
+    border-radius: 10px !important;
+    text-align: center;
+    width: 100% !important;
+    height: 100% !important;
+    margin: 10px 0 !important;
+}
+
+.fa-search {
+    position: relative !important;
+    left: -50px !important;
+}
+
+.people-inbox {
+    border: 3px solid #ccc;
+    border-radius: 8px 8px 0 0;
+    background-color: #eeeeee;
+    overflow: hidden;
+}
+
+.msg-inbox {
+    border: 3px solid #ccc;
+    border-radius: 8px 8px 0 0;
+    background-color: #eeeeee;
+    box-shadow: inset 0 0 8px 2px #d3d3d3;
+    overflow: hidden;
+}
+
+.msg-page {
+    height: 60vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    transition: all 0.5 ease-in-out;
+}
+
+.msg-page .msg_block {
+    animation: flash 0.6s ease-in-out;
+}
+
+@keyframes flash {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.send_msg_content {
+    background-color: #fff9e5 !important;
+}
+
+.received_msg_content {
+    background-color: #ffede2 !important;
+}
+
+.send-chats-img {
+    max-width: 7rem;
+}
+
+.send-chats-img img {
+    width: calc(2.5vw + 4rem);
+    border-radius: 100%;
+    border: 3.5px solid #6cf3e6;
+    object-fit: contain;
+}
+
+.received-chats-img {
+    max-width: 7rem;
+}
+
+.received-chats-img img {
+    width: calc(2.5vw + 4rem);
+    border-radius: 100%;
+    border: 3.5px solid #f3cf6c;
+}
+
+.send-msg-inbox .send_msg_content {
+    background: #efefef none repeat scroll 0 0;
+    border-radius: 10px;
+    border: 3px solid rgb(200, 245, 245);
+    color: #5a5a5a;
+}
+
+.received-msg-inbox .received_msg_content {
+    background: #efefef none repeat scroll 0 0;
+    border-radius: 10px;
+    border: 3px solid rgb(245, 229, 200);
+    color: #5a5a5a;
+}
+
+.time {
+    color: #777;
+}
+
+
+.msg-block {
+    height: 8%;
+    background-color: #5ffd91;
+}
+
+
+.form-control {
+    border: none !important;
+    border-radius: 20px !important;
+}
+
+
+.input-group .fa {
+    color: #007bff;
+}
+
+
+.bottom-icons .fa {
+    color: #fff;
+}
+
+.form-control:focus {
+    border-color: none !important;
+    box-shadow: none !important;
+    border-radius: 20px;
+}
+
+
+/* float input 浮動輸入標籤 */
+.floating-content {
+    transition: all 0.2s ease-out;
+}
+
+.floating-input {
+    font-weight: bold;
+    font-size: 2vh;
+    padding: 5px 15px 5px 15px;
+    color: #2c2c2c;
+    border: 3.5px solid #3d85d8 !important;
+    border-radius: 7px;
+    box-sizing: border-box;
+}
+
+.floating-input:focus {
+    outline: none;
+    animation: float 0.2s ease-out forwards;
+}
+
+@keyframes float {
+    100% {
+        padding: 8px 15px 8px 20px;
+    }
+}
+
+.floating-label {
+    position: absolute;
+    color: rgb(50, 50, 50);
+    font-weight: bold;
+    font-size: calc(1.5vh + 0.5rem);
+    left: 25px;
+    top: 8px;
+    transition: 0.3s ease all;
+    -moz-transition: 0.3s ease all;
+    -webkit-transition: 0.3s ease all;
+    pointer-events: none;
+}

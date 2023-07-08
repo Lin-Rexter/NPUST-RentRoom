@@ -1,0 +1,320 @@
+/* 網頁主區塊樣式 */
+#Main {
+    position: sticky;
+    align-items: center;
+    justify-content: center;
+    /*
+    flex-flow: column nowrap;
+    */
+    z-index: 100;
+    margin: 20px 0;
+    background-color: rgb(238, 238, 238);
+    box-shadow: 0px 0px 10px 0px rgb(96, 163, 163);
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+    background: url("https://specials-images.forbesimg.com/imageserve/5fbcaad45d111cabee5213f5/0x0.gif");
+}
+
+.manage_list {
+    border: 3px solid #46637f;
+    border-radius: 10px;
+    background-color: #8ac5b5;
+    padding: 5px;
+}
+
+.manage_list a {
+    border-radius: 8px !important;
+    text-align: center;
+    background-color: #d5d4d4;
+}
+
+.manage_list a:hover {
+    animation: move_bottom 0.3s ease-out;
+    animation-fill-mode:forwards;
+}
+
+@keyframes move_bottom {
+    from {
+        box-shadow: 0 0px 0px 0px #46637f;
+    }
+    to {
+        box-shadow: 0 5px 1px 4px #46637f;
+    }
+}
+
+/*欄位邊框*/
+.bd {
+    border-radius: 15px;
+    border: solid 3.5px rgb(46, 46, 46) !important;
+}
+
+/*群組列表擴展*/
+.bd2 {
+    border-radius: 15px;
+}
+
+/* 租客資料表格 */
+.outer {
+    max-width: 100%;
+    border-radius: 14px !important;
+    border: 3px solid #4cbdc1;
+    overflow: hidden;
+}
+
+.table-container {
+    max-height: 60vh;
+    max-width: 100%;
+    overflow: auto;
+}
+
+.rwd-table {
+    margin: auto;
+    width: 100%;
+    background-color: #496e77;
+    color: #fff;
+    border-radius: 12px;
+    padding: 0 1rem 1rem 1rem 1rem;
+    border-collapse: collapse;
+}
+
+
+thead,
+tbody {
+    width: 100%;
+}
+
+.rwd-table thead tr {
+    border-radius: 12px !important;
+}
+
+.rwd-table th {
+    text-align: left;
+    background-color: #59917a;
+}
+
+thead tr th {
+    background-color: #34646e;
+    position: sticky;
+    top: 0;
+}
+
+.rwd-table tr {
+    border-radius: 15px !important;
+}
+
+.rwd-table tr:last-of-type td:first-child,
+tr:last-of-type td:last-child {
+    border-bottom-left-radius: 15px;
+}
+
+.rwd-table tr:hover,
+td:hover {
+    background-color: rgb(80, 80, 80);
+    color: rgb(110, 230, 190);
+}
+
+@media (min-width: 45rem) {
+    .rwd-table td:before {
+        display: none;
+    }
+
+    .rwd-table th,
+    .rwd-table td {
+        display: table-cell;
+        padding: 1em !important;
+    }
+
+    .rwd-table th:first-child,
+    .rwd-table td:first-child {
+        padding-left: 0;
+    }
+
+    .rwd-table th:last-child,
+    .rwd-table td:last-child {
+        padding-right: 0;
+    }
+
+    .rwd-table th:not(:last-child),
+    td:not(:last-child) {
+        border-right: 3px solid #4cbdc1;
+    }
+
+    .rwd-table tr:not(:last-child) {
+        border-top: 3px solid #4cbdc1;
+        border-bottom: 3px solid #4cbdc1;
+    }
+}
+
+@media (max-width: 45rem) {
+    .rwd-table {
+        padding: 1rem !important;
+        border-collapse: separate;
+    }
+
+    thead,
+    tbody {
+        display: table;
+    }
+
+    .rwd-table tr {
+        margin: 2rem !important;
+        border-color: #46637f;
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        background-color: rgba(100, 100, 100, 0.8);
+    }
+
+    .rwd-table th {
+        display: none;
+    }
+
+    .rwd-table td {
+        display: grid;
+        margin: 0.5em 1em;
+        text-align: left;
+    }
+
+    .rwd-table td:first-child {
+        padding-top: 0.5em;
+    }
+
+    .rwd-table td:last-child {
+        padding-bottom: 0.5em;
+    }
+
+    .rwd-table td:before {
+        content: attr(data-th) ": ";
+        font-weight: bold;
+        width: 6.5em;
+        display: inline-block;
+        color: #dd5;
+    }
+}
+
+/* END-租客資料表格 */
+
+/* 黑名單 */
+.rwd-block-table {
+    margin: auto;
+    width: 100%;
+    background-color: #34495e;
+    color: #fff;
+    border-radius: 12px;
+    padding: 0 1rem 1rem 1rem 1rem;
+    border-collapse: collapse;
+}
+
+.rwd-block-table th {
+    text-align: left;
+    background-color: #59917a;
+}
+
+.rwd-block-table thead tr th {
+    background-color: #34646e;
+    position: sticky;
+    top: 0;
+}
+
+/* END-黑名單 */
+
+/* button-6 */
+.custom-btn {
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    display: inline-block;
+    box-shadow: inset 2px 2px 2px 0px rgba(255, 255, 255, .5),
+        7px 7px 20px 0px rgba(0, 0, 0, .1),
+        4px 4px 5px 0px rgba(0, 0, 0, .1);
+    outline: none;
+}
+
+.btn-6 {
+    background: rgb(247, 150, 192);
+    background: radial-gradient(circle, rgba(247, 150, 192, 1) 0%, rgba(118, 174, 241, 1) 100%);
+    line-height: 42px;
+    padding: 0;
+    border: none;
+}
+
+.btn-6 span {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.btn-6:before,
+.btn-6:after {
+    position: absolute;
+    content: "";
+    height: 0%;
+    width: 2px;
+    box-shadow:
+        -1px -1px 20px 0px rgba(255, 255, 255, 1),
+        -4px -4px 5px 0px rgba(255, 255, 255, 1),
+        7px 7px 20px 0px rgba(0, 0, 0, .4),
+        4px 4px 5px 0px rgba(0, 0, 0, .3);
+}
+
+.btn-6:before {
+    right: 0;
+    top: 0;
+    transition: all 500ms ease;
+}
+
+.btn-6:after {
+    left: 0;
+    bottom: 0;
+    transition: all 500ms ease;
+}
+
+.btn-6:hover {
+    box-shadow: none;
+}
+
+.btn-6:hover:before {
+    transition: all 500ms ease;
+    height: 100%;
+}
+
+.btn-6:hover:after {
+    transition: all 500ms ease;
+    height: 100%;
+}
+
+.btn-6 span:before,
+.btn-6 span:after {
+    position: absolute;
+    content: "";
+    box-shadow:
+        -1px -1px 20px 0px rgba(255, 255, 255, 1),
+        -4px -4px 5px 0px rgba(255, 255, 255, 1),
+        7px 7px 20px 0px rgba(0, 0, 0, .4),
+        4px 4px 5px 0px rgba(0, 0, 0, .3);
+}
+
+.btn-6 span:before {
+    left: 0;
+    top: 0;
+    width: 0%;
+    height: .5px;
+    transition: all 500ms ease;
+}
+
+.btn-6 span:after {
+    right: 0;
+    bottom: 0;
+    width: 0%;
+    height: .5px;
+    transition: all 500ms ease;
+}
+
+.btn-6 span:hover:before {
+    width: 100%;
+}
+
+.btn-6 span:hover:after {
+    width: 100%;
+}

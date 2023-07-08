@@ -1,0 +1,128 @@
+#Main_2 {
+    position: sticky;
+    z-index: 100;
+    margin: 20px 0;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    background-color: transparent;
+}
+
+#Outer_Main:has(#Main_2) {
+    width: 100%;
+    padding: 0 2rem;
+}
+
+@media all and (max-width: 768px) {
+    #Outer_Main {
+        width: 100vw !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    /*
+    *:has(#Outer_Main) {
+        box-sizing:unset !important;
+    }
+    */
+
+    #Outer_Main:has(#Main_2) {
+        width: 100%;
+        padding: 0;
+        margin: 0;
+    }
+}
+
+#left {
+    background-color: rgb(245, 240, 240);
+    border-radius: 10px;
+    border: 3.5px solid #cee4e4
+}
+
+#right {
+    height: 100%;
+    background-color: #f1f0de;
+    border-radius: 10px;
+    border: 3.5px solid #cee4e4;
+    padding: 1rem;
+}
+
+#filter {
+    background-color: rgb(232, 247, 241);
+}
+
+.box {
+    position: relative;
+    border: 3px solid black;
+    /*display: flex;
+    grid-gap: 10px 10px;*/
+    flex-flow: row wrap;
+    justify-content: space-evenly;
+    align-items: stretch;
+    align-content: center;
+    padding: 1rem;
+    margin: 0 0.5rem 2rem 0.5rem;
+    border-radius: 10px;
+}
+
+.box>.img_container,
+.box>.tenant_info,
+.box>.other_info {
+    transition: 0.5s ease-out width;
+    border-radius: 8px;
+}
+
+.box>div:hover {
+    background-color: rgb(235, 235, 235);
+}
+
+.box:hover {
+    background-color: rgb(249, 243, 239);
+}
+
+.img_container {
+    position: relative;
+    display: flex;
+    align-self: center !important;
+    height: 100%;
+    overflow: hidden;
+    z-index: 1;
+    padding: 0;
+    /*line-height: 160px;*/
+    cursor: pointer;
+}
+
+.img_container:hover::after {
+    opacity: 0.2;
+    border: 5px dashed rgb(0, 0, 0);
+}
+
+.tenant_info {
+    border: 2px solid black;
+    text-align: start;
+    padding: 2rem;
+    cursor: pointer;
+    user-select: text;
+    /*line-height: 160px;*/
+}
+
+.tenant_info p {
+    cursor: text  !important;
+}
+
+.other_info {
+    border: 2px solid black;
+    text-align: center;
+    cursor: pointer;
+    /*line-height: 160px;*/
+}
+
+.other_info p {
+    cursor: text;
+}
+
+hr {
+    /*分隔線樣式*/
+    border: 0;
+    height: 2px;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+}

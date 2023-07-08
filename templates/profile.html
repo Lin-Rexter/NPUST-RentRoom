@@ -1,0 +1,160 @@
+{# 要繼承的模板 #}
+{% extends "./layouts/base.html" %}
+
+{# 設置網頁的logo #}
+{% block Web_Icon %} https:// {% endblock Web_Icon %}
+
+{# 設置網頁標題 #}
+{% block Title %}房屋資料{% endblock Title%}
+
+{# 設置網頁CSS #}
+{% block CSS %}
+{# super(): 繼承原本模板設定的 #}
+{{ super() }}
+{% endblock CSS %}
+
+
+{# 網頁主區塊 #}
+{% block Outer_Main %}
+<main id="Main" class="row d-flex justify-content-center X_glass_morphism rounded rounded-5">
+  {% block Main %}
+  <article class="col">
+    <div class="row d-flex justify-content-center profile_container">
+      <p class="text-primary justify-content-center align-items-center d-flex fs-1">
+        <i class="fa-solid fa-address-card me-2"></i>
+        查看/修改個人資料
+      </p>
+
+      <hr class="hr">
+
+      <div class="row justify-content-center d-flex gx-5">
+        <!-- left column(大頭貼) -->
+        <div class="col-12 col-sm-7 col-md-5 col-lg-4 col-xl-3">
+          <div class="text-center">
+            <img id="avatar-image" src="./static/images/cb.jpg" class="avatar img-circle img-thumbnail" alt="avatar">
+            <input id="avatar-input" type="file" class="form-control fs-4" disabled>
+            <p class="fs-5"><del>讓我看看</del></p>
+          </div>
+        </div>
+
+        <!-- edit form column(個人資訊) -->
+        <div class="col-12 col-sm-8 col-md-7 col-lg-6 personal-info">
+          <div class="alert alert-info fs-3 fw-bold">
+            💬 Notice:當您修改了電話號碼，您必須先通過驗證才能儲存🥺
+          </div>
+
+          <form id="profile_from" class="profile-content d-flex row row-cols-1 gy-4" role="form"
+            enctype="multipart/form-data" action="{{ url_for('profile') }}" method="POST">
+            
+            <div class="identity">
+              <label class="col control-label fs-3">
+                <i class="fa-solid fa-user me-1"></i>身分(identity):
+              </label>
+              <div class="col-lg-8 col-lg-6">
+                <select name ="identity" type = "text">
+                  <option>房東</option>
+                  <option>租客</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="name">
+              <label class="col control-label fs-3">
+                <i class="fa-solid fa-user me-1"></i>姓名(Name):
+              </label>
+              <div class="col-lg-8 col-lg-6">
+                <input class="form-control fs-4"  name="username" type="text" value="蟹老闆" readonly>
+              </div>
+            </div>
+
+            <div class="phone">
+              <label class="col control-label fs-3">
+                <i class="fa-solid fa-phone me-1"></i>電話(Phone):
+              </label>
+              <div class="col-lg-8 col-lg-6">
+                <input class="form-control fs-4" id="phone" name="phone" type="tel" value="0968527527" readonly>
+              </div>
+            </div>
+
+            <div class="Email">
+              <label class="col control-label fs-3">
+                <i class="fa-solid fa-envelope me-1"></i>Email:
+              </label>
+              <div class="col-lg-8 col-lg-6">
+                <input class="form-control fs-4" id="Email" name="Email" type="text" value="MrKrabss19@gmail.com"
+                readonly>
+              </div>
+            </div>
+
+            <div class="bDate">
+              <label class="col control-label fs-3">
+                <i class="fa-solid fa-cake-candles me-1"></i>出生日期(Birthday):
+              </label>
+              <div class="col-lg-8 col-lg-6">
+                <input class="form-control fs-4" id="bDate" name="bDate" type="date" value="2023-06-17" readonly>
+              </div>
+            </div>
+
+            <div class="IDNum">
+              <label class="col control-label fs-3">
+                <i class="fa-solid fa-id-card me-1"></i>身分證字號(Identity number):
+              </label>
+              <div class="col-lg-8 col-lg-6">
+                <input class="form-control fs-4" id="idnum" name="idNum" type="text" value="N125478453" readonly>
+              </div>
+            </div>
+
+            <div class="Attach_file">
+              <label class="col control-label fs-3">
+                <i class="fa-solid fa-paperclip me-1"></i>附加檔案(Attach file):
+              </label>
+              <div class="col-lg-8 col-lg-6">
+                <input id="file-name" class="form-control fs-4" type="text" value="certification.pdf" readonly>
+                <input id="file-upload-button" class="form-control fs-4" value="" type="file" style="display: none;"
+                  accept=".png, .jpg, .jpeg, .pdf" multiple>
+              </div>
+            </div>
+
+            <div class="button_group mt-4 mb-3">
+              <input type="button" id="edit-button" class="edit-btn soft_btn_blue btn btn-primary" value="編輯"
+                onclick="toggleEditing()">
+              <input type="button" id="cancel-button" class="cancel-btn soft_btn_green btn btn-success" value="取消編輯"
+                onclick="cancelEditing()" style="display: none;">
+              <button id="validate-button" class="soft_btn_aqua btn btn-danger" type="button" onclick="validatePhone()"
+                style="display: none;">驗證電話號碼</button>
+              <input type="submit" id="submit-button" class="soft_btn_yellow btn btn-warning" value="提交" style="display: none;"/>
+            </div>
+          </form>
+          <div class="d-flex">
+            <p class="post-footer bg-light text-success p-2 fs-3 rounded rounded-3">上次修改: <span
+                id="last_modifed">2023年6月20日</span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    </hr>
+  </article>
+  {% endblock Main %}
+</main>
+{% endblock Outer_Main %}
+
+{# 網頁腳尾 #}
+{% block Footer %}
+<div class="col border border-dark me-2">
+  <p>最後修改: 2023-06-17</p>
+</div>
+
+<div class="col border border-dark me-2">
+  <p>待新增</p>
+</div>
+
+<div class="col border border-dark me-2">
+  <p>待新增</p>
+</div>
+{% endblock Footer%}
+
+{# 網頁JS #}
+{% block JS %}
+{{ super() }}
+<script src="{{ url_for('static', filename='./js/profilesetting.js') }}"></script>
+{% endblock JS %}

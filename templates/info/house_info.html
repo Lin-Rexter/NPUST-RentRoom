@@ -1,0 +1,123 @@
+{# 要繼承的模板 #}
+{% extends "./layouts/base.html" %}
+
+{# 設置網頁的logo #}
+{% block Web_Icon %} https:// {% endblock Web_Icon %}
+
+{# 設置網頁標題 #}
+{% block Title %}房屋資料{% endblock Title%}
+
+{# 設置網頁CSS #}
+{% block CSS %}
+{# super(): 繼承原本模板設定的 #}
+{{ super() }}
+
+<!-- Custom Style (自訂的CSS，只需更改filename)-->
+<link rel="stylesheet" href="{{ url_for('static', filename='./css/house_info.css') }}">
+{% endblock CSS %}
+
+
+{# 網頁主區塊 #}
+{% block Outer_Main %}
+<main id="Main" class="row d-flex justify-content-center X_glass_morphism rounded rounded-5">
+    {% block Main %}
+    <div class="col-12 col-sm-10 col-md-8 col-lg-6">
+        <!--內容上半部-->
+        <div class="row">
+            <div class="col-12 d-flex justify-content-center">
+                <h1>哈佛學園</h1>
+            </div>
+            <div class="col-12">
+                <hr class="border: solid 2px black;">
+            </div>
+            <div class="col-12">
+                <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-indicators">
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0"
+                            class="active" aria-current="true" aria-label="Slide 1">
+                        </button>
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
+                            aria-label="Slide 2">
+                        </button>
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
+                            aria-label="Slide 3">
+                        </button>
+                    </div>
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img src="https://img2.591.com.tw/house/2016/04/20/146113765929754508.jpg!fit.1000x.water2.jpg"
+                                class="d-block w-100">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="https://img2.591.com.tw/house/2016/04/20/146113765929754508.jpg!fit.1000x.water2.jpg"
+                                class="d-block w-100">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="https://img2.591.com.tw/house/2016/04/20/146113765929754508.jpg!fit.1000x.water2.jpg"
+                                class="d-block w-100">
+                        </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
+                        data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
+                        data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="row d-flex justify-content-center">
+            <div class="col-12">
+                <hr class="border: solid 2px black;">
+            </div>
+            <div class="col-12">
+            </div>
+
+            <div class="col-12 d-flex justify-content-center">
+                <hr>
+                <div class="box col-12 d-flex justify-content-center">
+                    <h1>房屋資訊</h1>
+                    
+                    <div class="col-12 d-flex justify-content-center">
+                        <div class="row row-cols-2" >
+                            <p>房屋名稱:屏科學人會館</p>
+                            <p>房型:套房</p>
+                            <p>坪數:4坪</p>
+                            <p>地點:屏東縣內埔鄉農專街55巷61號</p>
+                            <p>租金:$4467/月</p>
+                            <p>押金:$6000</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="col-12">
+
+            </div>
+        </div>
+        <div class="profile-content">
+            <input type="button"  class="cancel-btn" value="追蹤">
+            <input type="button" onclick="location.href='/private_chat'" value="私聊">
+        </div>
+
+    </div>
+    {% endblock Main %}
+</main>
+{% endblock Outer_Main %}
+
+
+{# 網頁腳尾 #}
+{% block Footer %}
+{% endblock Footer %}
+
+{# 網頁JS #}
+{% block JS %}
+{{ super() }}
+{% endblock JS %}

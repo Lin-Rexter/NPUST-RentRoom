@@ -1,0 +1,92 @@
+{# 要繼承的模板 #}
+{% extends "./layouts/base.html" %}
+
+{# 設置網頁的logo #}
+{% block Web_Icon %} https:// {% endblock Web_Icon %}
+
+{# 設置網頁標題 #}
+{% block Title %}房東資料{% endblock Title%}
+
+{# 設置網頁CSS #}
+{% block CSS %}
+{# super(): 繼承原本模板設定的 #}
+{{ super() }}
+
+<!-- Custom Style (自訂的CSS，只需更改filename)-->
+<!--房東管理頁面模板CSS -->
+<link rel="stylesheet" href="{{ url_for('static', filename='./css/tenant_managed.css') }}">
+{% endblock CSS %}
+
+{# 網頁主區塊 #}
+{% block Outer_Main %}
+<main id="Main" class="row d-flex justify-content-center">
+    {% block Main %}
+    <article class="col">
+        {% for info in tenants_info %}
+        <section class="box row gy-3">
+            <!-- 房屋圖片 -->
+            <div class="img_container col-12 col-sm-10 col-md-6 col-lg-6 col-xl-3">
+                <img src="{{ info['house_pic'] }}" alt="房屋圖片" title="房屋圖片">
+            </div>
+            <!-- 房屋資訊 -->
+            <div class="tenant_info col-12 col-sm-11 col-md-6 col-lg-6 col-xl-5">
+                <p class="fw-bold fs-2" align="center">
+                    <i class="fa-solid fa-circle-info fa-beat-fade" style="color: #6e97dd;"></i> 租客資料
+                </p>
+                <hr>
+                <!--從app.py傳入參數-->
+                <div class="row row-cols-1 row-cols-sm-2 fw-bold">
+                    <p>房客姓名: <span>{{ info['tenant_name'] }}</span></p>
+                    <p>房屋名稱: <span>{{ info['house_name'] }}</span></p>
+                    <p>房型: <span>{{ info['house_type'] }}</span></p>
+                    <p>坪數: <span>{{ info['ping'] }}</span>坪</p>
+                    <p>房屋地點: <span>{{ info['house_location'] }}</span></p>
+                    <p>出租時間: <span>{{ info['rental_time'] }}</span></p>
+                    <p>退租時間: <span>{{ info['leave_time'] }}</span></p>
+                    <p>行動電話: <span>{{ info['tenant_phone'] }}</span></p>
+                    <p>租金: $<span>{{ info['rent'] }}</span>元/月</p>
+                    <p>押金: $<span>{{ info['deposit'] }}</span>元</p>
+                    <p>狀態: <span>{{ info['status'] }}</span></p>
+                </div>
+            </div>
+            <!--以上是從app.py傳入參數-->
+
+            <!-- 房屋管理功能 -->
+            <div class="other_info col-12 col-sm-11 col-md-10 col-lg-10 col-xl-3">
+                <p>附加相關資訊</p>
+            </div>
+        </section>
+        {% endfor %}
+    </article>
+    {% endblock Main %}
+</main>
+{% endblock Outer_Main %}
+
+
+{# 網頁腳尾 #}
+{% block Footer %}
+<div class="col-12">
+    <footer id="Footer" class="row fw-bold d-flex justify-content-around ">
+        <div class="col border border-dark me-2">
+            <p>最後修改: 2023-05-16</p>
+        </div>
+
+        <div class="col border border-dark me-2">
+            <p>待新增</p>
+        </div>
+
+        <div class="col border border-dark me-2">
+            <p>待新增</p>
+        </div>
+        {% endblock Footer %}
+    </footer>
+</div>
+</div>
+
+
+{# 網頁JS #}
+{% block JS %}
+    {{ super() }}
+{% endblock JS %}
+
+</html>

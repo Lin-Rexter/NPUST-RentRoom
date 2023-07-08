@@ -1,0 +1,314 @@
+{% extends "./layouts/base.html" %}
+
+{# 設置網頁的logo #}
+{% block Web_Icon %} https:// {% endblock Web_Icon %}
+
+{# 設置網頁標題 #}
+{% block Title %}搜尋房屋{% endblock Title %}
+
+{# 設置網頁CSS #}
+{% block CSS %}
+{# super(): 繼承原本模板設定的 #}
+{{ super() }}
+
+<!-- Custom Style (自訂的CSS，只需更改filename)-->
+<link rel="stylesheet" href="{{ url_for('static', filename='./css/house_search.css') }}" defer>
+{% endblock CSS %}
+
+{# 網頁主區塊 #}
+{% block Outer_Main %}
+{# 毛玻璃: glass_morphism #}
+<main id="Main_2" class="row justify-content-center gy-3 gy-md-0">
+    {% block Main %}
+    <!-- 左區塊(房屋搜尋) -->
+    <div id="left" class="col-11 col-md-8 p-3">
+        <!-- 篩選功能區塊 -->
+        <div id="filter"
+            class="row d-flex gx-5 justify-content-center align-content-center align-items-center border border-5 border-light rounded rounded-4 mx-3 px-3">
+            <!-- 左區塊(篩選選項) -->
+            <div class="col-12 col-md-7 fs-4">
+                {% for item in filter_info %}
+                <div class="row-cols-auto d-flex my-3 justify-content-center">
+                    <!-- 項目名稱 -->
+                    <p class="fw-bold fs-3 col-2 my-0">{{ item["filter_name"] }}</p>
+
+                    <!-- 項目選項(RWD摺疊式) -->
+                    {% for option in item["options"] %}
+                    <div class="form-check form-check-inline col-2 my-0 align-self-center">
+                        <input class="form-check-input" type="checkbox"
+                            id="inlineCheckboxP{{ filter_info.index(item)  }}{{ item['options'].index(option) }}"
+                            value="option{{ filter_info.index(item)  }}{{ item['options'].index(option) }}"
+                            name="checkbox">
+                        <label class="form-check-label"
+                            for="inlineCheckbox{{ filter_info.index(item)  }}{{ item['options'].index(option) }}">
+                            {{ option }}
+                        </label>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- 中間區塊(分隔線) -->
+            <div class="col-auto d-flex d-none d-md-flex justify-content-center">
+                <div class="vr rounded rounded-5 text-warning" style="height:15.5rem !important;width:0.3rem;"></div>
+            </div>
+
+            <!-- 右區塊(搜尋) -->
+            <div class="col-12 col-sm-auto col-md-4 justify-content-center mt-2 mb-3 mt-md-auto m-md-auto">
+                <div class="row d-flex justify-content-center">
+                    <p class="col-12 fs-2 fw-bold text-primary">尋找房屋:</p>
+                    <form class="d-flex gy-md-0 flex-wrap flex-xl-nowrap align-content-center align-items-center">
+                        <input class="form-control me-2 fs-2 mb-2 mb-xl-auto" type="search" placeholder="Search"
+                            aria-label="Search" name="search">
+                        <button
+                            class="btn col-auto col-xl-5 col-xxl-4 btn-outline-success d-flex fw-bold fs-3 justify-content-evenly align-items-center"
+                            type="submit">
+                            搜尋
+                            <i class="fa-solid fa-magnifying-glass fa-shake fs-2"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <hr />
+
+        <!-- 房屋結果區塊 -->
+        <div class="row d-flex justify-content-center border border-4 border-success rounded rounded-4 mx-3">
+            <article class="col-12 m-3">
+                {% for info in tenants_info %}
+                <section>
+                    <a href="" target="_self"
+                        class="box row gy-3 d-flex align-items-stretch text-reset text-decoration-none fs-3">
+                        <!-- 房屋圖片 -->
+                        <div class="img_container col-12 col-sm-10 col-md-6 col-lg-5 col-xl-4">
+                            <img src="{{ info['house_pic'] }}" alt="房屋圖片" title="房屋圖片">
+                        </div>
+
+                        <!-- 房屋資訊 -->
+                        <div class="tenant_info col-12 col-sm-11 col-md-6 col-lg-6 col-xl-5"
+                            onclick="event.preventDefault()">
+                            <!-- 標題 -->
+                            <p class="fw-bold fs-2" align="center">
+                                <i class="fa-solid fa-circle-info fa-beat-fade" style="color: #6e97dd;"></i> 基本資料
+                            </p>
+                            <hr>
+
+                            <!-- 內容 -->
+                            <div class="row row-cols-1 row-cols-sm-1 fw-bold " id="search1">
+                                <p>房屋名稱: <span>{{ info['house_name'] }}</span></p>
+                                <p>房型: <span>{{ info['house_type'] }}</span></p>
+                                <p name="">坪數: <span>{{ info['ping'] }}</span>坪</p>
+                                <p>房屋地點: <span>{{ info['house_location'] }}</span></p>
+                                <p>行動電話: <span>{{ info['tenant_phone'] }}</span></p>
+                                <p>租金: $<span>{{ info['rent'] }}</span>元/月</p>
+                                <p>押金: $<span>{{ info['deposit'] }}</span>元</p>
+                            </div>
+                        </div>
+
+                        <!-- 房屋管理功能 -->
+                        <div class="other_info col-12 col-sm-11 col-md-10 col-lg-10 col-xl-2">
+                            <p>附加相關資訊</p>
+                        </div>
+                    </a>
+                </section>
+
+                {% endfor %}
+            </article>
+        </div>
+
+        <!--分頁欄位-->
+        <nav aria-label="Page navigation example">
+            <ul class="pagination pagination-lg justify-content-center py-5">
+                <li class="page-item">
+                    <a class="page-link" name="Previous" type="submit" href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                {% for item in range(data_length) %}
+                    {% if now_index == 0 %}
+                    <form method="POST">
+                        <li class="page-item {{ 'active' if item == 0 else '' }}">
+                            <input type="hidden" name="page" value="{{ item+1 }}" readonly>
+                            <button type="submit" class="page-link">{{ item+1 }}</button>
+                        </li>
+                    </form>
+                    {% else %}
+                    <form method="POST">
+                        <li class="page-item {{ 'active' if item == now_index else '' }}">
+                            <input type="hidden" name="page" value="{{ item+1 }}" readonly>
+                            <button type="submit" class="page-link">{{ item+1 }}</button>
+                        </li>
+                    </form>
+                    {% endif %}
+                {% endfor %}
+                <li class="page-item">
+                    <a class="page-link" name="Next" type="submit" href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+
+    <!-- 中間區塊(分隔線) -->
+    <div class="d-flex d-none d-md-flex col-auto h-100 justify-content-center">
+        <div class="vr vh-100 rounded rounded-5 mx-auto mx-xl-5" style="width:0.6rem;"></div>
+    </div>
+
+    <!-- 右區塊(你可能喜歡推薦功能) -->
+    <div id="right" class="col-11 col-md-3 p-4">
+        <article class="row g-4 d-flex justify-content-center">
+            <p class="col fs-1 justify-content-center d-flex"><span id="Auto_write"></span></p>
+            <section class="col-12">
+                <div class="card">
+                    <img src="https://img2.591.com.tw/house/2016/04/20/146113765929754508.jpg!fit.1000x.water2.jpg"
+                        class="card-img-top" alt="屏科國際學苑-精緻單人大套房">
+                    <div class="card-body">
+
+                        <p class="card-text">
+                            房屋名稱:屏科國際學苑-精緻單人大套房
+                        </p>
+
+                        <p class="card-text">
+                            房型:分租套房
+                        </p>
+
+                        <p class="card-text">
+                            坪數: 6坪
+                        </p>
+                        <p class="card-text">
+                            房屋地點: 內埔鄉農專街55巷61號
+                        </p>
+
+                        <p class="card-text">
+                            行動電話: 0912345678
+                        </p>
+
+                        <p class="card-text">
+                            租金: $4467元/月
+                        </p>
+                        
+                        <p class="card-text">
+                            押金: $6000元
+                        </p>
+                    </div>
+                </div>
+            </section>
+            <section class="col-12">
+                <div>
+                    <div class="card">
+                        <img src="https://img2.591.com.tw/house/2022/05/26/165355431069292481.jpg!550x410.water3.jpg"
+                            class="card-img-top" alt="內埔溫馨獨立套房">
+                        <div class="card-body">
+
+                            <p class="card-text">
+                                房屋名稱:內埔溫馨獨立套房
+                            </p>
+
+                            <p class="card-text">
+                                房型:獨立套房
+                            </p>
+
+                            <p class="card-text">
+                                坪數: 7坪
+                            </p>
+                            <p class="card-text">
+                                房屋地點: 內埔鄉光華街41號
+                            </p>
+                            <p class="card-text">
+                                行動電話: 0987654321
+                            </p>
+                            <p class="card-text">
+                                租金: $6200元/月
+                            </p>
+                            <p class="card-text">
+                                押金: $12400元
+                            </p>
+                            
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="col-12">
+                <div>
+                    <div class="card">
+                        <img src="https://img2.591.com.tw/house/2016/04/20/146113868381620105.jpg!750x588.water2.jpg"
+                            class="card-img-top" alt="精緻雙人豪華大套房-最靠近屏科大">
+                        <div class="card-body">
+
+                            <p class="card-text">
+                                房屋名稱:精緻雙人豪華大套房-最靠近屏科大
+                             </p>
+
+                            <p class="card-text">
+                               房型:分租套房
+                            </p>
+
+                            <p class="card-text">
+                                坪數: 7坪
+                            </p>
+                            <p class="card-text">
+                                房屋地點: 內埔鄉農專街55巷61號
+                            </p>
+                            <p class="card-text">
+                                行動電話: 0987650650
+                            </p>
+                            <p class="card-text">
+                                租金: $5634元/月
+                            </p>
+                            <p class="card-text">
+                                押金: $8000元
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </article>
+    </div>
+    {% endblock Main %}
+</main>
+{% endblock Outer_Main %}
+
+{# 網頁腳尾 #}
+{% block Footer %}
+<div class="col border border-dark me-2">
+    <p>最後修改: 2023-05-16</p>
+</div>
+
+<div class="col border border-dark me-2">
+    <p>待新增</p>
+</div>
+
+<div class="col border border-dark me-2">
+    <p>待新增</p>
+</div>
+{% endblock Footer %}
+
+{# 設置網頁JS #}
+{% block JS %}
+{# super(): 繼承原本模板設定的 #}
+{{ super() }}
+<script>
+    // 自動打字
+    auto_write(
+        tag = "#Auto_write", // 也寫入的標籤名稱
+        msgs = [
+            "推薦給<cite class='text-success'>你</cite>"
+        ], // 裡面有^1000、^500是延遲的秒數(毫秒)
+        {
+            speed: 80, // 打字速度
+            del_speed: 70, // 刪除速度
+            delay: 1200, // 延遲開始
+            del_delay: 6000, // 延遲刪除
+            cursor_style: "🏠", // 游標樣式
+            smart_del: false, // 預設，智慧刪除功能(只刪除字串不相同的部分)
+            loop: true // 不斷重複
+        }
+    )
+
+</script>
+{% endblock JS %}
