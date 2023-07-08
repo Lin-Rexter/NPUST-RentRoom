@@ -32,25 +32,25 @@
 
 	> **3. [啟用虛擬環境](https://python-poetry.org/docs/cli/#shell)**
 	> * 使用 **預設** Python 版本
-	> ```bash
-	> poetry shell
-	> ```
+	>> ```bash
+	>> poetry shell
+	>> ```
 	>
 	> * 如果你想 **[指定 Python 版本](https://python-poetry.org/docs/managing-environments/#switching-between-environments)**
-	> ```bash
-	> poetry env use 3.9
-	> ```
+	>> ```bash
+	>> poetry env use 3.9
+	>> ```
 
 	> **4. 運行Flask網頁**
 	> * 如果上一個步驟有使用 `poetry shell`
-	> ```bash
-	> python ./app.py
-	> ```
+	>> ```bash
+	>> python ./app.py
+	>> ```
 	>
 	> * 如果上一個步驟 **沒有使用** `poetry shell`
-	> ```bash
-	> poetry run python ./app.py
-	> ```
+	>> ```bash
+	>> poetry run python ./app.py
+	>> ```
 
 </details>
 
