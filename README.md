@@ -3,10 +3,11 @@
 
 <div align="center">
 
-# Flask - NPUST-RentRoom 🏠
-使用Flask(async)製作的NPUST租屋平台
+## Flask - NPUST-RentRoom 🏠
+**使用Flask(async)製作的NPUST租屋平台**
 
-## ⚠️ | 功能尚未完善，持續開發中... |
+### ⚠️ | 功能尚未完善，持續開發中... |
+
 </div>
 
 ---
