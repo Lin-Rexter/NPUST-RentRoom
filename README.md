@@ -1,2 +1,2 @@
-# NPUST-RentRoom
-NPUST租屋平台
+# Flask - NPUST-RentRoom
+使用Flask(async)製作的NPUST租屋平台
